@@ -4,7 +4,7 @@
 
 [Trello link][trello]
 
-[heroku]: http://www.victor-aw-music-composer.herokuapp.com
+[heroku]: http://victor-aw-music-composer.herokuapp.com
 [trello]: https://trello.com/b/3QoZnrEt/music-composition-app
 
 Music Composer is a web application that allows users to produce 4-channel music tracks.
