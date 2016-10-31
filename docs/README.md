@@ -1,6 +1,6 @@
 # Music-Composer
 
-[Music-Composer live][heroku]
+[Music Composer live][heroku]
 
 [heroku]: http://victor-aw-music-composer.herokuapp.com
 
