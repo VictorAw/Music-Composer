@@ -27,4 +27,5 @@
 ### Notes
 
  - `POST   /api/users/:id/tracks/:track_id/notes`
+ - `PATCH  /api/users/:id/tracks/:track_id/notes/:note_id`
  - `DELETE /api/users/:id/tracks/:track_id/notes/:note_id`
