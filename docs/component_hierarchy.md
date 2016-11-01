@@ -22,13 +22,17 @@
 **TrackContainer**
  - Track
 
+**EditorContainer**
+ - Editor
+
 ## Routes
 
-| Path                       | Component           |
-|----------------------------|---------------------|
-| "/sign-up"                 | "AuthFormContainer" |
-| "/sign-in"                 | "AuthFormContainer" |
-| "/"                        | "HomeContainer"     |
-| "/user/:id                 | "ProfileContainer"  |
-| "/user/:id/track/:track_id | "TrackContainer"    |
+| Path                            | Component           |
+|---------------------------------|---------------------|
+| "/sign-up"                      | "AuthFormContainer" |
+| "/sign-in"                      | "AuthFormContainer" |
+| "/"                             | "HomeContainer"     |
+| "/user/:id                      | "ProfileContainer"  |
+| "/user/:id/track/:track_id      | "TrackContainer"    |
+| "/user/:id/track/:track_id/edit | "EditorContainer"   |
 
