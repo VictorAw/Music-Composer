@@ -23,3 +23,8 @@
  - `SHOW   /api/users/:id/tracks/:track_id`
  - `PATCH  /api/users/:id/tracks/:track_id`
  - `DELETE /api/users/:id/tracks/:track_id`
+
+### Notes
+
+ - `POST   /api/users/:id/tracks/:track_id/notes`
+ - `DELETE /api/users/:id/tracks/:track_id/notes/:note_id`
