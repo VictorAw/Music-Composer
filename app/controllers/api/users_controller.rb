@@ -25,6 +25,7 @@ class Api::UsersController < ApplicationController
       end
     else
       render json: ["Cannot edit other users' profiles"], status: 401
+    end
   end
 
   def show
