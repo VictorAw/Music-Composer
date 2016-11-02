@@ -1,32 +1,33 @@
 ```js
 {
-  currentUser: {
-    id: 1,
-    username: "victor_aw",
-    description: "I'm a hobbyist music composer."
-    tracks: [
-      { title: "Untitled", id: 1 },
-      { title: "My first track", id: 2 }
-    ]
-  },
-  users: {
-    1: {
+  session: {
+    currentUser: {
       id: 1,
       username: "victor_aw",
+      description: "I'm a hobbyist music composer."
+      tracks: [
+        { title: "Untitled", id: 1 },
+        { title: "My first track", id: 2 }
+      ]
     },
-    2: {
+    errors: []
+  },
+  users: {
+    users: {
+      1: {
+        id: 1,
+        username: "victor_aw",
+      },
+      2: {
+        id: 2,
+        username: "breakfast" 
+      }
+    },
+    selectedUser: {
       id: 2,
-      username: "breakfast" 
+      username: "breakfast",
+      descriptoin: "A real keyboard cat" 
     }
-  },
-  selectedUser: {
-    id: 2,
-    username: "breakfast",
-    descriptoin: "A real keyboard cat" 
-  },
-  forms: {
-    signUp: { errors: [] },
-    logIn: { errors: [] }
   },
   track: {
     id: 2
