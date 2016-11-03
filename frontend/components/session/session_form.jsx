@@ -90,10 +90,10 @@ class SessionForm extends React.Component {
     return (
       <form onSubmit={this.handleSubmit} className="login-form" id="login-form">
         {title}
+        { this.redirectLink() }
+        { this.guestLogin() }
         <label id="username-field" className="login-field">
           Username:
-          { this.redirectLink() }
-          { this.guestLogin() }
           <input id="username-input" 
                  className="login-input"
                  onChange={this.update("username")} />
