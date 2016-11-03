@@ -3,6 +3,7 @@ class Api::SessionsController < ApplicationController
     @user = User.find_by_username(session_params[:username])
     if @user
       if @user.is_password?(session_params[:password])
+        login(@user)
         render "api/users/show"
       else
         render json: ["Incorrect password"], status: 401
@@ -14,8 +15,9 @@ class Api::SessionsController < ApplicationController
 
   def destroy
     if current_user
+      @user = current_user
       logout
-      render "api/user/show"
+      render "api/users/show"
     else
       render json: ["Nobody signed in"], status: 404
     end
