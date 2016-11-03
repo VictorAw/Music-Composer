@@ -14,8 +14,8 @@ const Modal = ({children, router}) => {
     <section id="modal" className="modal" onClick={leaveModal(router)}>
       <div id="modal-content-container" className="modal-content-container">
         <section id="modal-content" className="modal-content">
-          <p id="modal-close-button" className="modal-close-button" onClick={leaveModal(router)}>x</p>
           { children }
+          <p id="modal-close-button" className="modal-close-button" onClick={leaveModal(router)}>x</p>
         </section>
        </div>
     </section> 

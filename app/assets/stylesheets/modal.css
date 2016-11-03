@@ -26,17 +26,24 @@
   background-color: white;
   border: 1px solid black;
 
-  padding-top: 10%;
-  padding-left: 10%;
-  padding-right: 10%;
-  padding-bottom: 20%;
+  padding-bottom: 20px;
 
-  width: 30%;
+  width: 340px;
+  height: 400px;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.modal-content p {
+  position: relative;
+  top: -150px;
+  right: -10px;
 }
 
 .modal-close-button {
   color: black;
-  float: right;
   font-size: 28px;
   font-weight: 700;
 }

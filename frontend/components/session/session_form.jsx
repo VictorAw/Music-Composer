@@ -54,10 +54,10 @@ class SessionForm extends React.Component {
   descriptionField() {
     if (this.props.formType === "signup") {
       return (
-        <label id="description-field" className="description-field">
+        <label id="description-field" className="login-field">
           Description:
           <textarea id="description-input"
-                    className="description-input"
+                    className="login-input"
                     onChange={this.update("description")} />
         </label>
       );
@@ -89,7 +89,7 @@ class SessionForm extends React.Component {
     console.log(this.props.errors.full_messages);
     return (
       <form onSubmit={this.handleSubmit} className="login-form" id="login-form">
-        {title}
+        <h1>{title}</h1>
         { this.redirectLink() }
         { this.guestLogin() }
         <label id="username-field" className="login-field">
@@ -104,6 +104,7 @@ class SessionForm extends React.Component {
         <label id="password-field" className="login-field">
           Password:
           <input id="password-input"
+                 type="password"
                  className="login-input"
                  onChange={this.update("password")} />
         </label>

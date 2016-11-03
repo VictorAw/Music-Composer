@@ -2,14 +2,44 @@
   display: flex;
   flex-direction: column;
   align-items: left;
+
+  min-width: 200px;
+}
+
+.login-form h1 {
+  font-size: 24px;
+  font-weight: 700;
+  padding-bottom: 10px;
+}
+
+.login-field:first-of-type {
+  margin-top: 10px;
 }
 
 .login-field {
   display: flex;
   flex-direction: column;
-  margin: 10px;
+  align-items: left;
+
+  margin-bottom: 10px;
+  width: 150px;
+  min-width: 150px;
+}
+
+.login-input {
+  margin-top: 5px;
+  width: 150px;
+  min-width: 150px;
 }
 
 .login-submit {
-  margin: 10px;
+
+  width: 60px;
+  min-width: 60px;
 }
+
+#description-input {
+  height: 60px;
+  min-height: 60px;
+}
+

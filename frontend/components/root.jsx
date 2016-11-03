@@ -25,12 +25,13 @@ const Root = ({store}) => {
     <Provider store={store}>
       <Router history={hashHistory}>
         <Route path="/" component={MainLayout}>
-          <IndexRoute component={Home} />
+          <IndexRoute component={Home}/>
+
           <Route path="/login" component={Modal} onEnter={_redirectIfLoggedIn}>
             <IndexRoute component={SessionFormContainer} />
            </Route>
-        
-          <Route path="/signup" component={Modal} onEnter={_redirectIfLoggedIn}>
+          
+           <Route path="/signup" component={Modal} onEnter={_redirectIfLoggedIn}>
             <IndexRoute component={SessionFormContainer} />
           </Route>
         </Route> 
