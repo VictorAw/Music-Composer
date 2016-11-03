@@ -4,6 +4,7 @@
     currentUser: {
       id: 1,
       username: "victor_aw",
+      email: "victor_aw@email.com",
       description: "I'm a hobbyist music composer."
       tracks: [
         { title: "Untitled", id: 1 },
