@@ -14,14 +14,26 @@ description     | text      | not null
 column name | data type | details
 ------------|-----------|--------------------------
 id          | integer   | not null, primary key
-composer_id | integer   | not null, indexed, unique
+composer_id | integer   | not null, indexed
 title       | string    | not null
+
+## channel
+column name | data type | details
+------------|-----------|--------------------------
+id          | integer   | not null, primary key
+track_id    | integer   | not null, indexed
+
+## chord
+column name   | data type | details
+--------------|-----------|--------------------------
+id            | integer   | not null, primary key
+channel_id    | integer   | not null, indexed
 
 ## note
 column name | data type    | details
 ------------|--------------|----------------------
 id          | integer      | not null, primary key
-track_id    | integer      | not null, indexed
+chord_id    | integer      | not null, indexed
 start_time  | integer      | not null
 end_time    | integer      | not null
 freq        | decimal(4,2) | not null

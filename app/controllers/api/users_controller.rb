@@ -17,20 +17,28 @@ class Api::UsersController < ApplicationController
 
   def update
     @user = User.find_by_id(params[:id])
-    if @user == current_user
-      if @user.update(user_params)
-        render :show
+    if @user
+      if @user == current_user
+        if @user.update(user_params)
+          render :show
+        else
+          render json: @user.errors.full_messages, status: 422
+        end
       else
-        render json: @user.errors.full_messages, status: 422
+        render json: ["Cannot edit other users' profiles"], status: 401
       end
     else
-      render json: ["Cannot edit other users' profiles"], status: 401
+        render json: ["User not found"], status: 404
     end
   end
 
   def show
     @user = User.includes(:tracks).find_by_id(params[:id])
-    render :show
+    if @user
+      render :show
+    else
+      render json: ["User not found"], status: 404
+    end
   end
 
   def destroy
