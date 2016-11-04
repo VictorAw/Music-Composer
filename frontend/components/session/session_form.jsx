@@ -66,18 +66,23 @@ class SessionForm extends React.Component {
 
   guestLogin() {
     return (
-      <div id="guest-login-link">{"Want to take a tour?"}<Link to="/login" onClick={this.handleGuestLogin}>Guest login!</Link></div>
+      <div id="guest-login-link">{"Want to take a tour?"}<Link to="#" onClick={this.handleGuestLogin}>Guest login!</Link></div>
     )
   }
 
   handleSubmit(e) {
     e.preventDefault();
-    this.props.processForm({user: this.state});
+    if (this.props.formType === "login") {
+      this.props.login({user: this.state});
+    }
+    else {
+      this.props.signup({user: this.state});
+    }
   }
 
   handleGuestLogin(e) {
     e.preventDefault();
-    this.props.processForm({user: {username: "Guest", password: "tour_account"}});
+    this.props.login({user: {username: "Guest", password: "tour_account"}});
   }
 
   update(field) {
