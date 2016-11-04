@@ -23,4 +23,4 @@ bundle.js.map
 
 # Ignore swap files
 *.swp
-NOTES.TODO
+*.TODO
