@@ -18,6 +18,12 @@ When the user clicks the save button, the tracks will be saved from the store in
 
 Music will be playable through the browser's web audio api.
 
+### Music Playback
+
+Each channel in a music track will have an associated `gainNode`, to allow each channel to have its own volumne and to allow channels to be muted.
+
+Each `Note` in a `Chord` will create an `Oscillator` that will generate the music tone for the note's duration. If this proves to be too slow, then an Oscillator pool can be created and oscillators allocated a note when the playback time reaches the note.
+
 ### Users
 
 Users are stored in a table in the database and have an associated description to render in the Profile component. Each user is connected to their associated Tracks through a join table joining each Track's `composer_id` with the User's `id`.
