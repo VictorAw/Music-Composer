@@ -1,11 +1,11 @@
 import React from "react";
 import { Link } from "react-router";
 
-function signedIn(currentUser, logout) {
+function signedIn(requestSelectedUser, currentUser, logout) {
   return (
     <nav className="header-buttons profile-logout">
       <h2 className="header-name">Hi, </h2>
-      <Link to="/users/{currentUser.id}">{currentUser.username}!</Link>
+      <Link to="/profile" onClick={requestSelectedUser}>{currentUser.username}!</Link>
       <Link to="/" onClick={logout}>Log Out!</Link>
     </nav>
   );

@@ -5,7 +5,7 @@ const timeToStr = (duration) => {
   let minutes = seconds / 60;
   let hours = minutes / 60;
 
-  return `${seconds % 60}:${minutes % 60}:${hours}`;
+  return `${hours}:${minutes % 60}:${seconds % 60}`;
 }
 
 const TracksListItem = (track) => (
@@ -15,7 +15,7 @@ const TracksListItem = (track) => (
     </p>
     <Link to="#" onClick={playTrack(track.id)}>Play</Link>
     <p> id="track-info-duration" className="track-info-duration">
-    {timeToStr(track.end_time - track-start_time))}
+    {timeToStr(track.duration)}
     </p>
   </div>
 )

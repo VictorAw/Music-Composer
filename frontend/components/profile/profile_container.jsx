@@ -8,6 +8,12 @@ function mapStateToProps(state) {
   };
 }
 
+function mapDispatchToProps(dispatch) {
+  return {
+    requestUser: (id) => dispatch(requestUser(id))
+  }
+}
+
 export default connect(
   mapStateToProps
 )(Profile);
