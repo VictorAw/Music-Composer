@@ -27,7 +27,7 @@
     selectedUser: {
       id: 2,
       username: "breakfast",
-      descriptoin: "A real keyboard cat" 
+      description: "A real keyboard cat" 
     }
   },
   track: {
