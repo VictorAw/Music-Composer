@@ -9,14 +9,26 @@ class Track < ApplicationRecord
   has_many :channels, dependent: :destroy
 
   def duration
-    return this.end_time - this.start_time
+    return self.end_time - self.start_time
   end
 
-  def find_start_time
-    start_time = 0
+  def find_end_time
     end_time = 0
-    channels.each do |channel|
 
+    # Prevent nested queries
+    data = Track.includes(channels: {chords: :notes})
+
+    # Order data
+    end_first = data.order("notes.end_time DESC").find_by_id(self.id)
+    end_first.channels.each do |channel|
+      channel.chords.each do |chord|
+        chord_largest_end_time = chord.notes.first.end_time
+        if chord_largest_end_time > end_time
+          end_time = chrord_largest_end_time
+        end
+      end
     end
+
+    end_time
   end
 end
