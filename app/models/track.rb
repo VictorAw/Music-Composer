@@ -8,7 +8,7 @@ class Track < ApplicationRecord
 
   has_many :channels, dependent: :destroy
 
-  def duration
+  def length
     return self.end_time - self.start_time
   end
 
