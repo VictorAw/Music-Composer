@@ -1,4 +1,4 @@
-json.extract! @track, :id, :title, :start_time, :end_time
+json.extract! @track, :id, :title, :duration
 # Channels array
 json.set! :channels do
   json.array! @track.channels do |channel|
