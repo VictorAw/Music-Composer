@@ -5,6 +5,7 @@ import MainLayout from "./layouts/main_layout";
 import Home from "./home/home";
 import Modal from "./modal/modal";
 import SessionFormContainer from "./session/session_form_container";
+import ProfileContainer from "./profile/profile_container";
 
 const Root = ({store}) => {
   const _ensureLoggedIn = (nextState, replace) => { 
@@ -33,6 +34,9 @@ const Root = ({store}) => {
           
            <Route path="/signup" component={Modal} onEnter={_redirectIfLoggedIn}>
             <IndexRoute component={SessionFormContainer} />
+          </Route>
+
+          <Route path="/users/:userId/profile" component={ProfileContainer} onEnter={_ensureLoggedIn}>
           </Route>
         </Route> 
       </Router>

@@ -2,7 +2,9 @@ import { RECEIVE_TRACK, PLAY_TRACK } from "../actions/track_actions";
 import _ from "lodash";
 
 const _emptyTrack = {
+  id: null,
   title: "Untitled",
+  length: 0,
   notes: [[[]]]
 };
 

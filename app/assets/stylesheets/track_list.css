@@ -1,0 +1,13 @@
+.track-list {
+  display: flex;
+  flex-direction: column;
+  margin-top: 50px;
+  margin-left: 50px;
+}
+
+.track-info-container {
+  display: flex;
+  flex-direction: column;
+  margin-top: 20px;
+  border: 1px solid black;
+}

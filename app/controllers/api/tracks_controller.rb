@@ -49,8 +49,8 @@ class Api::TracksController < ApplicationController
     #    ORDER BY notes.start_time) AS track_data")
     # ActiveRecord::Associations::Preloader.new.preload(@track, channels: {chords: :notes})
     # @track = tracks.select { |track| track.id == params[:id].to_i }[0]
-    @track = Track.includes(channels: {chords: :notes}).order("notes.start_time ASC").find_by_id(params[:id])
-    #@track = Track.eager_load(channels: {chords: :notes}).order("notes.start_time ASC").find_by_id(params[:id])
+    @track = Track.includes(channels: :notes).order("notes.starting_quarter_beat ASC").find_by_id(params[:id])
+    #@track = Track.eager_load(channels: {chords: :notes}).order("notes.starting_quarter_beat ASC").find_by_id(params[:id])
     if @track
       render :show 
     else

@@ -4,6 +4,6 @@ json.email user.email
 json.description user.description
 json.set!(:tracks) do
   json.array!(user.tracks) do |track|
-    json.extract!(track, :title, :id) 
+    json.extract!(track, :title, :id, :length) 
   end
 end
