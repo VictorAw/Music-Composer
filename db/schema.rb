@@ -10,45 +10,44 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161103163952) do
+ActiveRecord::Schema.define(version: 20161103163943) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
   create_table "channels", force: :cascade do |t|
     t.integer  "track_id",   null: false
+    t.float    "volume",     null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["track_id"], name: "index_channels_on_track_id", using: :btree
   end
 
-  create_table "chords", force: :cascade do |t|
-    t.integer  "channel_id", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["channel_id"], name: "index_chords_on_channel_id", using: :btree
-  end
-
   create_table "notes", force: :cascade do |t|
-    t.integer  "chord_id",                             null: false
-    t.integer  "start_time",                           null: false
-    t.integer  "end_time",                             null: false
-    t.decimal  "freq",         precision: 6, scale: 2, null: false
-    t.integer  "start_volume",                         null: false
-    t.integer  "end_volume",                           null: false
-    t.datetime "created_at",                           null: false
-    t.datetime "updated_at",                           null: false
-    t.index ["chord_id"], name: "index_notes_on_chord_id", using: :btree
+    t.integer  "channel_id",            null: false
+    t.integer  "starting_quarter_beat", null: false
+    t.integer  "ending_quarter_beat",   null: false
+    t.float    "freq",                  null: false
+    t.float    "start_volume",          null: false
+    t.float    "end_volume",            null: false
+    t.datetime "created_at",            null: false
+    t.datetime "updated_at",            null: false
+    t.index ["channel_id"], name: "index_notes_on_channel_id", using: :btree
+    t.index ["ending_quarter_beat"], name: "index_notes_on_ending_quarter_beat", using: :btree
+    t.index ["starting_quarter_beat"], name: "index_notes_on_starting_quarter_beat", using: :btree
   end
 
   create_table "tracks", force: :cascade do |t|
     t.integer  "composer_id", null: false
     t.string   "title",       null: false
+    t.integer  "bpm",         null: false
     t.integer  "start_time",  null: false
     t.integer  "end_time",    null: false
     t.datetime "created_at",  null: false
     t.datetime "updated_at",  null: false
     t.index ["composer_id"], name: "index_tracks_on_composer_id", using: :btree
+    t.index ["end_time"], name: "index_tracks_on_end_time", using: :btree
+    t.index ["start_time"], name: "index_tracks_on_start_time", using: :btree
   end
 
   create_table "users", force: :cascade do |t|

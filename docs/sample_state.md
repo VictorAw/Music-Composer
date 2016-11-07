@@ -35,69 +35,93 @@
     channels: [ // Arbitary number of channels
       { // First channel
         id: 1, track_id: 2,
-        chords: [ 
-          { // First Chord
-            id: 1, channel_id: 1,
-            notes: [
-              { id: 1, freq: 392.00, // G4
-                start_time: 0, end_time: 1500,
-                start_vol: 25, end_vol: 100 }, 
-              { id: 2, freq: 493.88, // B4
-                start_time: 0, end_time: 1500,
-                start_vol: 25, end_vol: 100 }, 
-              { id: 3, freq: 587.33, // D5
-                start_time: 0, end_time: 1500,
-                start_vol: 25, end_vol: 100 } 
-            ]
-          }, { // Second Chord
-            id: 2, channel_id: 1,
-            notes: [
-              { id: 4, freq: 440.00, // A4
-                start_time: 1500, end_time: 3000,
-                start_vol: 100, end_vol: 50 }, 
-              { id: 6, freq: 523.25, // C5
-                start_time: 1500, end_time: 3000,
-                start_vol: 100, end_vol: 50 }, 
-              { id: 9, freq: 659.25, // E5
-                start_time: 1500, end_time: 3000,
-                start_vol: 100, end_vol: 50 } 
-            ]
-          }
+        vol: 1,
+        notes: [
+          { id: 1, freq: 392.00, // G4
+            starting_quarter_beat: 0,
+				    ending_quarter_beat: 6,
+            start_vol: 0.25, end_vol: 1 }, 
+          { id: 2, freq: 493.88, // B4
+            starting_quarter_beat: 0,
+				    ending_quarter_beat: 6,
+            start_vol: 0.25, end_vol: 1 }, 
+          { id: 3, freq: 587.33, // D5
+            starting_quarter_beat: 0,
+            ending_quarter_beat: 6,
+            start_vol: 0.25, end_vol: 1 },
+          { id: 4, freq: 440.00, // A4
+            starting_quarter_beat 12,
+            ending_quarter_beat: 24,
+            start_vol: 1, end_vol: 0.5 }, 
+          { id: 6, freq: 523.25, // C5
+            starting_quarter_beat 12,
+            ending_quarter_beat: 24,
+            start_vol: 1, end_vol: 0.5 }, 
+          { id: 9, freq: 659.25, // E5
+            starting_quarter_beat 12,
+            ending_quarter_beat: 24,
+            start_vol: 1, end_vol: 0.5 } 
         ]
       }, { // Second channel
         id: 2, track_id: 2,
-        chords: [
-          {
-            id: 3, channel_id: 2,
-            notes: [ // First and only note
-              { id: 60, freq: 164.81, // E3
-                start_time: 0, end_time: 3000,
-                start_vol: 50, end_vol: 50 }
-            ]
-          }
+        vol: 1,
+        notes: [
+          { id: 60, freq: 164.81, // E3
+            starting_quarter_beat: 0,
+				    ending_quarter_beat: 24,
+            start_vol: 0.5, end_vol: 0.5 }
         ]
       }, { // Third channel
         id: 3, track_id: 2,
-        chords: [ 
-          { // First chord (single note)
-            id: 4, channel_id: 3,
-            notes: [
-              { id:75, freq: 440.00, // A4
-                start_time: 750, end_time: 950,
-                start_vol: 100, end_vol: 100 }
-            ]
-          },
-          { // Second chord (single note)
-            id: 5, channel_id: 3,
-            notes: [
-              { id: 80, freq: 493.88, // B4
-                start_time: 2250, end_time: 2450,
-                start_vol: 100, end_vol: 100 }
-            ]
-          }
+        vol: 0.5,
+        notes: [ 
+          { id:75, freq: 440.00, // A4
+            starting_quarter_beat: 6, 
+            ending_quarter_beat: 8,
+            start_vol: 1, end_vol: 1 },
+          { id: 80, freq: 493.88, // B4
+            starting_quarter_beat: 10, 
+            ending_quarter_beat: 12,
+            start_vol: 1, end_vol: 1 }
         ]
       }
     ]
+  },
+  player: {
+    notes: [ // Generated through an api call where the track is sent in as a Track and the server returns the notes
+      { id: 1, freq: 392.00, // G4
+        starting_quarter_beat: 0,
+				ending_quarter_beat: 6,
+        start_vol: 0.25, end_vol: 1 }, 
+      { id: 2, freq: 493.88, // B4
+        starting_quarter_beat: 0,
+				ending_quarter_beat: 6,
+        start_vol: 0.25, end_vol: 1 }, 
+      { id: 3, freq: 587.33, // D5
+        starting_quarter_beat: 0,
+				ending_quarter_beat: 6,
+        start_vol: 0.25, end_vol: 1 },
+      { id: 9, freq: 659.25, // E5
+        starting_quarter_beat: 0,
+				ending_quarter_beat: 24,
+        start_vol: 0.5, end_vol: 0.5 },
+      { id:75, freq: 440.00, // A4
+        starting_quarter_beat: 6,
+        ending_quarter_beat: 8,
+        start_vol: 0.5, end_vol: 0.5 },
+      { id: 4, freq: 440.00, // A4
+        starting_quarter_beat 12,
+				ending_quarter_beat: 24,
+        start_vol: 1, end_vol: 0.5 }, 
+      { id: 6, freq: 523.25, // C5
+        starting_quarter_beat 12,
+				ending_quarter_beat: 24,
+        start_vol: 1, end_vol: 0.5 }, 
+      { id: 80, freq: 493.88, // B4
+        starting_quarter_beat 10,
+        ending_quarter_beat: 12, 
+        start_vol: 0.5, end_vol: 0.5 }
+    ]  
   }
 }
 
