@@ -1,13 +1,55 @@
 .track-list {
+  background-color: lightblue;
   display: flex;
   flex-direction: column;
-  margin-top: 50px;
-  margin-left: 50px;
+  align-items: center;
+  margin: 3%;
+  width: 100%;
 }
 
 .track-info-container {
+  background-color: salmon;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin: 5% 10% 0% 10%;
+  padding: 2%;
+  width: 80%;
+}
+
+.track-info {
+  display:flex;
+  flex-direction: column;
+  white-space: nowrap;
+}
+
+.track-info-title {
+  margin: 5px;
+}
+
+.track-info-length {
+  margin: 5px;
+}
+
+.track-buttons {
+  background-color: lightgreen;
   display: flex;
   flex-direction: column;
-  margin-top: 20px;
-  border: 1px solid black;
+}
+
+.track-buttons-controls {
+  background-color: lightblue;
+  display:flex;
+  justify-content: space-between;
+}
+
+.track-buttons img {
+  max-width: 45px;
+  max-height: 45px;
+  margin: 5px 5px 5px 5px;
+}
+
+.track-buttons-edit {
+  display: flex;
+  justify-content: center;
 }

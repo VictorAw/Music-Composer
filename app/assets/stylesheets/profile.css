@@ -7,8 +7,9 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 5px;
-  width: 200px;
+  padding: 2%;
+  width: 20%;
+  min-width: 200px;
 
   background-color: lightblue;
 }
@@ -21,5 +22,6 @@
 }
 
 .profile-description-container {
-  margin: 10px;
+  background-color: salmon;
+  margin: 10% 5%;
 }
