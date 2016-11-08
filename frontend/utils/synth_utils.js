@@ -11,6 +11,7 @@ class Note {
               freq,
               start_vol, end_vol, 
               start_qbeat, end_qbeat, bpm) {
+    this.ctx = ctx;
     this.oscillator = ctx.createOscillator();
     this.volume = ctx.createGain();
    
@@ -25,9 +26,13 @@ class Note {
     // Start and end time relative to the currentTime of the context
     // Start, end, duration, and currentTime are in seconds
     let currTime = ctx.currentTime;
-    let start = qbeatToS(start_qbeat, bpm) - currTime;
-    let end = qbeatToS(end_qbeat, bpm) - currTime;
+    let start = qbeatToS(start_qbeat, bpm);
+    let end = qbeatToS(end_qbeat, bpm) - 0.05; // Slight separation of notes
     let duration = end - start;
+
+    // Set the oscillator's frequency
+    this.oscillator.frequency.value = freq;
+    console.log(this.oscillator);
 
     // Set the start time, end time, and volume of the note
     this.oscillator.start(start);
@@ -40,28 +45,30 @@ class Note {
     vols[0] = this.volume.gain.value;
     vols[1] = 0;
 
-    this.volume.gain.setValueCurveAtTime(vols, ctx.currentTime, 0.1);
-    this.oscillator.stop(ctx.currentTime + 0.1);
+    this.volume.gain.setValueCurveAtTime(vols, this.ctx.currentTime, 0.1);
+    this.oscillator.stop(this.ctx.currentTime + 0.1);
   }
 }
 
 class Track {
   constructor(trackData) {
+    this.trackData = trackData;
+    this.playing = false;
     this.bpm = trackData.bpm;
 
     // Setup noteData 
     this.noteData = [];
-    trackData.channels.forEach((track) => {
-      track.notes.forEach((note) => {
-        noteData.push(note);
+    trackData.channels.forEach((channel) => {
+      channel.notes.forEach((note) => {
+        this.noteData.push(note);
       });
     });
    
-    noteData.sort((a, b) => {
+    this.noteData.sort((a, b) => {
       if (a.starting_quarter_beat < b.starting_quarter_beat) {
         return -1;
       }
-      else if (a.starting_quarter_beat > b.starting_quarteR_beat) {
+      else if (a.starting_quarter_beat > b.starting_quarter_beat) {
         return 1;
       }
       else {
@@ -69,13 +76,28 @@ class Track {
       }
     });
 
+    console.log(this.noteData);
+
+    this.bindEventHandlers();
+
     // Set up playback session
     this.reset();
+    this.playing = true;
+  }
+
+  bindEventHandlers() {
+    this.finish = this.finish.bind(this);
+  }
+
+  finish() {
+    this.context.close();
+    this.playQueue = [];
   }
 
   reset() {
     this.context = new AudioContext();
-    this.context.suspend();
+    this.pause();
+    console.log(this.context);
 
     // Start creating playback notes
     this.playQueue = [];
@@ -87,35 +109,47 @@ class Track {
       // Generate notes if there are any left to genereate
       if (notesRemaining > 0) {
         // If there are more than 10k notes to generate, only generate 10k
-        let notesToGen = notesRemaining > 10000 ? 10000 : notesReamining;
-          for (let i=0; i<notesToGen; i++) {
-            let noteData = this.noteData[i];
-            // Context, Freq, Volume, Time(start, end, bpm)
-            playQueue.push(
-              new Note(this.context,
-                       this.noteData.freq,
-                       this.noteData.start_volume,
-                       this.noteData.end_volume,
-                       this.noteData.starting_quarter_beat,
-                       this.noteData.ending_quarter_beat,
-                       this.bpm);
-          }
-        }, 1000);
-    }
+        let notesToGen = notesRemaining > 10000 ? 10000 : notesRemaining;
+        for (let i=0; i<notesToGen; i++) {
+          let noteDatum = this.noteData[i];
+          // Context, Freq, Volume, Time(start, end, bpm)
+          this.playQueue.push(
+            new Note(this.context,
+                     noteDatum.freq,
+                     noteDatum.start_volume,
+                     noteDatum.end_volume,
+                     noteDatum.starting_quarter_beat,
+                     noteDatum.ending_quarter_beat,
+                     this.bpm
+            )
+          );
+        }
+      }
+      else {
+        this.playQueue[this.playQueue.length-1].onended = this.finish;
+        clearInterval(this.playQueueGen);
+      }
+    }, 1000);
+    this.continuePlay();
   }
 
-  start() {
+  continuePlay() {
     this.context.resume();
   }
 
   stop() {
-    // Stop generating new notes
-    clearInterval(this.playQueueGen); 
+    if (this.playing) {
+      this.playing = false;
+      // Stop generating new notes
+      clearInterval(this.playQueueGen); 
 
-    // Stop all notes
-    this.playQueue.forEach((note) => {
-      note.stop()
-    });
+      // Stop all notes
+      this.playQueue.forEach((note) => {
+        note.stop()
+      });
+
+      this.finish();
+    }
   }
 
   pause() {

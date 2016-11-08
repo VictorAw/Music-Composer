@@ -1,11 +1,12 @@
-import { RECEIVE_TRACK, PLAY_TRACK } from "../actions/track_actions";
+import { RECEIVE_TRACK } from "../actions/track_actions";
 import _ from "lodash";
 
 const _emptyTrack = {
   id: null,
   title: "Untitled",
+  bpm: 60,
   length: 0,
-  notes: [[[]]]
+  channels: []
 };
 
 const TrackReducer = (oldState=_emptyTrack, action) => {
@@ -13,11 +14,7 @@ const TrackReducer = (oldState=_emptyTrack, action) => {
 
   switch(action.type) {
     case RECEIVE_TRACK: {
-      return _.merge({}, oldState, { track: action.track });
-    }
-    case PLAY_TRACK: {
-      console.log("Doot Doot Doot. Music should play eventually");
-      return oldState;
+      return _.merge({}, oldState, action.track);
     }
     default: {
       return oldState;

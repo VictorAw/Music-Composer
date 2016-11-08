@@ -3,10 +3,11 @@ export const RECEIVE_TRACK = "RECEIVE_TRACK";
 export const UPDATE_TRACK = "UPDATE_TRACK";
 export const PLAY_TRACK = "PLAY_TRACK";
 export const DELETE_TRACK = "DELETE_TRACK";
+export const PLAYING_TRACK = "PLAYING_TRACK";
 
 export const requestTrack = (id) => ({
   type: REQUEST_TRACK,
-  id
+  id,
 });
 
 export const receiveTrack = (track) => ({
@@ -19,8 +20,12 @@ export const updateTrack = (track) => ({
   track
 });
 
-export const playTrack = (track) => ({
+export const playTrack = () => ({
   type: PLAY_TRACK,
+});
+
+export const playingTrack = (track) => ({
+  type: PLAYING_TRACK,
   track
 });
 
