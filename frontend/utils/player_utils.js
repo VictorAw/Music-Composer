@@ -56,6 +56,8 @@ class Track {
     this.playing = false;
     this.bpm = trackData.bpm;
 
+    let cstart = new Date();
+
     // Setup noteData 
     this.noteData = [];
     trackData.channels.forEach((channel) => {
@@ -76,7 +78,9 @@ class Track {
       }
     });
 
-    console.log(this.noteData);
+    let cend = new Date();
+
+    console.log(`NoteData took ${cend.getTime() - cstart.getTime()} msec`);
 
     this.bindEventHandlers();
 
@@ -94,7 +98,46 @@ class Track {
     this.playQueue = [];
   }
 
+  generateNotes() {
+    let dataLength = this.noteData.length;
+    let playLength = this.playQueue.length;
+    let notesRemaining = dataLength - playLength;
+    // Generate notes if there are any left to genereate
+    if (notesRemaining > 0) {
+      let pgstart = new Date();
+     
+      // If there are more than 10k notes to generate, only generate 10k
+      let notesToGen = notesRemaining > 10000 ? 10000 : notesRemaining;
+      for (let i=0; i<notesToGen; i++) {
+        let noteDatum = this.noteData[i];
+        // Context, Freq, Volume, Time(start, end, bpm)
+        this.playQueue.push(
+            new Note(this.context,
+              noteDatum.freq,
+              noteDatum.start_volume,
+              noteDatum.end_volume,
+              noteDatum.starting_quarter_beat,
+              noteDatum.ending_quarter_beat,
+              this.bpm
+              )
+        );
+      }
+      
+      let pgend = new Date();
+      console.log(`PlayQueue generation cycle took ${pgend.getTime() - pgstart.getTime()} ms`);
+
+      return true;
+    }
+    else {
+      console.log("PlayQueue generation finished");
+
+      return false;
+    }
+  }
+
   reset() {
+    let rstart = new Date();
+
     this.context = new AudioContext();
     this.pause();
     console.log(this.context);
@@ -102,34 +145,19 @@ class Track {
     // Start creating playback notes
     this.playQueue = [];
     // Generate new notes every second
+    this.generateNotes(); // Generate the first round of notes immediately
     this.playQueueGen = setInterval(() => {
-      let dataLength = this.noteData.length;
-      let playLength = this.playQueue.length;
-      let notesRemaining = dataLength - playLength;
-      // Generate notes if there are any left to genereate
-      if (notesRemaining > 0) {
-        // If there are more than 10k notes to generate, only generate 10k
-        let notesToGen = notesRemaining > 10000 ? 10000 : notesRemaining;
-        for (let i=0; i<notesToGen; i++) {
-          let noteDatum = this.noteData[i];
-          // Context, Freq, Volume, Time(start, end, bpm)
-          this.playQueue.push(
-            new Note(this.context,
-                     noteDatum.freq,
-                     noteDatum.start_volume,
-                     noteDatum.end_volume,
-                     noteDatum.starting_quarter_beat,
-                     noteDatum.ending_quarter_beat,
-                     this.bpm
-            )
-          );
-        }
-      }
-      else {
+      if (!this.generateNotes()) {
         this.playQueue[this.playQueue.length-1].onended = this.finish;
         clearInterval(this.playQueueGen);
       }
+
     }, 1000);
+
+    let rend = new Date();
+
+    console.log(`Reset took ${rend.getTime() - rstart.getTime()} msec`);
+
     this.continuePlay();
   }
 
