@@ -92,3 +92,78 @@ Track.second.update({
     })]
   })]
 })
+
+Track.create({
+  id: 3, title: "My Second Track", composer_id: 1,
+  bpm: 120, start_time: 0, end_time: 3000
+})
+
+Track.third.update({
+  channels: [Channel.new({
+    id: 4, track_id: 3,
+    volume: 1,
+    notes: [Note.new({
+      id: 10, channel_id: 4, 
+      freq: 784.00,
+      starting_quarter_beat: 0,
+      ending_quarter_beat: 12,
+      start_volume: 0.25, end_volume: 1
+    }), Note.new({
+      id: 11, channel_id: 4, 
+      freq: 987.76,
+      starting_quarter_beat: 0,
+      ending_quarter_beat: 12,
+      start_volume: 0.25, end_volume: 1
+    }), Note.new({
+      id: 12, channel_id: 4,
+      freq: 1174.66,
+      starting_quarter_beat: 0,
+      ending_quarter_beat: 12,
+      start_volume: 0.25, end_volume: 1
+    }), Note.new({
+      id: 13, channel_id: 4,
+      freq: 880.00,
+      starting_quarter_beat: 12,
+      ending_quarter_beat: 24,
+      start_volume: 1, end_volume: 0.5
+    }), Note.new({
+      id: 14, channel_id: 4,
+      freq: 1046.5,
+      starting_quarter_beat: 12,
+      ending_quarter_beat: 24,
+      start_volume: 1, end_volume: 0.5
+    }), Note.new({
+      id: 15, channel_id: 4,
+      freq: 1318.5,
+      starting_quarter_beat: 12,
+      ending_quarter_beat: 24,
+      start_volume: 1, end_volume: 0.5
+    })]
+  }), Channel.new({
+    id: 5, track_id: 3,
+    volume: 1,
+    notes: [Note.new({
+      id: 16, channel_id: 5,
+      freq: 329.62,
+      starting_quarter_beat: 0,
+      ending_quarter_beat: 24,
+      start_volume: 0.5, end_volume: 0.5
+    })]
+  }), Channel.create({
+    id: 6, track_id: 3,
+    volume: 0.5,
+    notes: [Note.new({
+      id: 17, channel_id: 6,
+      freq: 880.00,
+      starting_quarter_beat: 6,
+      ending_quarter_beat: 8,
+      start_volume: 1, end_volume: 1 
+    }), Note.new({
+      id: 18, channel_id: 6,
+      freq: 987.76,
+      starting_quarter_beat: 18, 
+      ending_quarter_beat: 20,
+      start_volume: 1, end_volume: 1
+    })]
+  })]
+})
