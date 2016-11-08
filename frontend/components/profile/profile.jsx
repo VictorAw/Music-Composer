@@ -1,5 +1,5 @@
 import React from "react";
-import TracksListItem from "./tracks_list_item";
+import TracksListItemContainer from "./tracks_list_item_container";
 
 class Profile extends React.Component {
   constructor(props) {
@@ -11,7 +11,6 @@ class Profile extends React.Component {
   }
 
   render() {
-    console.log(this.props.selectedUser);
     return (
       <section id="profile-container" className="profile-container">
         <div id="profile-info" className="profile-info">
@@ -27,7 +26,7 @@ class Profile extends React.Component {
         <div id="track-list" className="track-list">
         {
           this.props.selectedUser.tracks.map((track) => (
-            <TracksListItem key={track.id} track={track}/>
+            <TracksListItemContainer key={track.id} trackInfo={track}/>
           ))
         }
         </div>

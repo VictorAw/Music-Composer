@@ -5,13 +5,13 @@ import { requestUser } from "../../actions/user_actions";
 
 function mapStateToProps(state) {
   return {
-    selectedUser: state.users.selectedUser
+    selectedUser: state.users.selectedUser,
   };
 }
 
 function mapDispatchToProps(dispatch) {
   return {
-    requestUser: id => dispatch(requestUser(id))
+    requestUser: id => dispatch(requestUser(id)),
   };
 }
 
