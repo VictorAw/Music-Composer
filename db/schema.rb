@@ -28,6 +28,7 @@ ActiveRecord::Schema.define(version: 20161103163943) do
     t.integer  "starting_quarter_beat", null: false
     t.integer  "ending_quarter_beat",   null: false
     t.float    "freq",                  null: false
+    t.string   "waveform",              null: false
     t.float    "start_volume",          null: false
     t.float    "end_volume",            null: false
     t.datetime "created_at",            null: false
