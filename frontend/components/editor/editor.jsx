@@ -11,122 +11,116 @@ class Editor extends React.Component {
     this.setConstants();
 
     this.state = {
-      scroll: {
-        x: 0,
-        y: 0,
-      },
       mousePos: {
         x: 0,
         y: 0
       }
     };
 
-    this.scrollDelay = 0;
-    this.mouseMoveDelay = 0;
-
     this.handleRowClick = this.handleRowClick.bind(this);
-    this.handleScrollEvent = this.handleScrollEvent.bind(this);
+    this.handleScroll = this.handleScroll.bind(this);
   }
   
   handleRowClick(id) {
     return (e) => {
       console.log(e);
       console.log(`Row ${id} clicked at ` + e.evt.layerX);
+      this.setState({mousePos: {x: e.evt.layerX, y: e.evt.layerY}});
     }
   }
 
-  handleScrollEvent(e) {
-    // Only handle every 30th scroll event to prevent
-    // app slowdown
-    if (this.scrollDelay == 30) {
-      this.setState(_.merge(
-        {}, 
-        this.state, 
-        { 
-          scroll: {
-            x: e.nativeEvent.target.scrollLeft,
-            y: e.nativeEvent.target.scrollTop 
-          }
-        })
-      );
-      this.scrollDelay = 0;
-    }
-    else {
-      this.scrollDelay++;
-    }
+  handleScroll(e) {
+    let row = e.nativeEvent.target;
+    this.refs.timeline.scrollLeft = row.scrollLeft;
+    this.refs.sidebar.scrollTop = row.scrollTop;
   }
 
   render() {
     // Calculate where the note blocks go using the redux store's track
 
     return (
-      <div id="canvas-container" 
-           className="canvas-container" 
-           onScroll={this.handleScrollEvent}>
-        <Stage id="workspace" className="workspace" 
-               width={this.canvas_width} height={this.canvas_height}>
-          <Layer>
-            <Rect x={0}
-                  y={this.state.scrollY}
-                  width={this.timeline_width}
-                  height={this.timeline_height}
-                  fill="blue"/>
-            {this.rows}
-            {/*
-            <PitchSidebar 
-              x={this.state.scrollX}
-              y={this.timeline_height}
-              width={this.pitch_sidebar_width}
-              height={this.pitch_sidebar_height}/>
-            */}
-
-            <Rect x={this.state.scrollX}
-              y={this.timeline_height}
-              width={this.pitch_sidebar_width}
-              height={this.pitch_sidebar_height}
-              fill="green"/>
-          </Layer>
-        </Stage>
+      <div className="editor-container">
+        <div className="editor-main-column">
+          
+          <div className="editor-timeline" ref="timeline">
+            <Stage width={this.timelineWidth} height={this.timelineHeight}>
+              <Layer>
+                <Rect x={0} y={this.scroll.y}
+                      width={this.timelineWidth}
+                      height={this.timelineHeight}
+                      fill="blue" listening="false"/>
+                <Rect x={5} y={5}
+                      width={20}
+                      height={20}
+                      fill="black" listening="false"/>
+              </Layer>
+            </Stage>
+          </div>
+       
+          <div className="editor-row" onScroll={this.handleScroll}>
+            <div className="editor-sidebar" ref="sidebar">
+              <Stage width={this.pitchSidebarWidth} height={this.pitchSidebarHeight}>
+                <Layer>
+                  <Rect x={this.scroll.x} y={0}
+                    width={this.pitchSidebarWidth}
+                    height={this.pitchSidebarHeight}
+                    fill="green" listening="false"/>
+                  <Rect x={this.state.scroll.x + 5} y={5}
+                    width={20} height={20}
+                    fill="black" listening="false"/>
+                </Layer>
+              </Stage>
+            </div>
+            
+            <div className="editor-canvas-container">
+              <Stage width={this.canvasWidth} height={this.canvasHeight}>
+                <Layer>
+                  {this.rows}
+                </Layer>
+              </Stage>
+            </div>
+          </div>
+        </div>
       </div>
     );
   }
 
   setConstants() {
     // Workspace size vars
-    this.pitch_count = 88;
+    this.pitchCount = 88;
 
-    this.qbeat_width = 40;
-    this.qbeats_per_row = 480;
+    this.qbeatWidth = 40;
+    this.qbeatsPerRow = 480;
 
-    this.row_width = this.qbeats_per_row * this.qbeat_width;
-    this.row_height = 20;
+    this.rowWidth = this.qbeatsPerRow * this.qbeatWidth;
+    this.rowHeight = 20;
 
-    this.pitch_sidebar_width = 40;
-    this.timeline_width = this.row_width + this.pitch_sidebar_width;
+    this.pitchSidebarWidth = 40;
+    this.timelineWidth = this.rowWidth + this.pitchSidebarWidth;
 
-    this.timeline_height = this.row_height;
-    this.pitch_sidebar_height = (this.pitch_count * this.row_height) + this.timeline_height;
+    this.timelineHeight = this.rowHeight;
+    this.pitchSidebarHeight = (this.pitchCount * this.rowHeight) + this.timelineHeight;
 
-    this.canvas_width = (this.qbeats_per_row * this.qbeat_width) + this.pitch_sidebar_width;
-    this.canvas_height = (this.pitch_count * this.row_height) + this.timeline_height;
+    this.canvasWidth = (this.qbeatsPerRow * this.qbeatWidth);
+    this.canvasHeight = (this.pitchCount * this.rowHeight);
 
     // Row array population
     this.rows = [];
-    for (let row_id=0; row_id<this.pitch_count; row_id++) {
+    for (let rowId=0; rowId<this.pitchCount; rowId++) {
       // Alternate colors
       let color = "gray";
-      if (row_id % 2 === 0) {
+      if (rowId % 2 === 0) {
         color = "lightgray";
       }
 
       this.rows.push(
-        <Row x={this.pitch_sidebar_width} 
-          y={this.timeline_height + (row_id * this.row_height)} 
-          width={this.row_width} 
-          height={this.row_height} 
+        <Row x={0} 
+          y={rowId * this.rowHeight} 
+          width={this.rowWidth} 
+          height={this.rowHeight} 
           color={color}
-          key={row_id}
-          handleRowClick={this.handleRowClick(row_id)}
+          key={rowId}
+          handleRowClick={this.handleRowClick(rowId)}
         />
       )
     }

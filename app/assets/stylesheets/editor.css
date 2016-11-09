@@ -1,7 +1,30 @@
-.canvas-container {
-  display: flex;
-
+.editor-container {
   width: 600px;
   height: 400px;
+}
+
+.editor-main-column {
+  display: flex;
+  flex-direction: column;
+
+}
+
+.editor-row {
+  display: flex;
+  height: 400px;
+}
+
+.editor-canvas-container {
   overflow: scroll;
 }
+
+.editor-timeline {
+  width: 600px;
+  overflow: hidden;
+}
+
+.editor-sidebar {
+  min-width: fit-content;
+  overflow: hidden;
+}
+
