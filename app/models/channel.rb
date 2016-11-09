@@ -4,5 +4,5 @@ class Channel < ApplicationRecord
 
   belongs_to :track
   has_many :notes, dependent: :destroy, inverse_of: :channel
-  accepts_nested_attributes_for :notes
+  accepts_nested_attributes_for :notes, allow_destroy: true
 end

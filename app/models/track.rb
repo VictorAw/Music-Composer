@@ -7,7 +7,7 @@ class Track < ApplicationRecord
     foreign_key: :composer_id
 
   has_many :channels, dependent: :destroy, inverse_of: :track
-  accepts_nested_attributes_for :channels
+  accepts_nested_attributes_for :channels, allow_destroy: true
 
   def qbeats_to_ms(qbeat_count)
     Integer(((qbeat_count / 4.0) * (60.0 / bpm)) * 1000)
