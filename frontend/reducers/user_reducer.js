@@ -11,7 +11,7 @@ const UserReducer = (oldState=_nullUsers, action) => {
 
   switch(action.type) {
     case RECEIVE_USER: {
-      return _.merge({}, oldState, { selectedUser: action.user });
+      return _.merge({}, { users: oldState.users }, { selectedUser: action.user });
     }
     default: {
       return oldState;
