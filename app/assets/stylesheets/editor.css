@@ -1,0 +1,7 @@
+.canvas-container {
+  display: flex;
+
+  width: 600px;
+  height: 400px;
+  overflow: scroll;
+}

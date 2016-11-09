@@ -15,4 +15,13 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   ReactDOM.render(<Root store={store} />, document.getElementById("root"));
+
+  // For testing
+  window.store = store;
 });
+
+import { createTrack, updateTrack, deleteTrack } from "./actions/track_actions";
+
+window.createTrack = createTrack;
+window.updateTrack = updateTrack;
+window.deleteTrack = deleteTrack;
