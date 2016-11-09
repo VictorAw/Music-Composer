@@ -1,4 +1,6 @@
-import { RECEIVE_TRACK } from "../actions/track_actions";
+import { RECEIVE_TRACK,
+         ADD_NOTE_TO_TRACK,
+         REMOVE_NOTE_FROM_TRACK } from "../actions/track_actions";
 import _ from "lodash";
 
 const _emptyTrack = {
@@ -15,6 +17,34 @@ const TrackReducer = (oldState=_emptyTrack, action) => {
   switch(action.type) {
     case RECEIVE_TRACK: {
       return _.merge({}, oldState, action.track);
+    }
+    case ADD_NOTE_TO_TRACK: {
+      let newState = _.merge({}, oldState);
+      let ch_idx = action.channel_idx;
+      let channel = newState.channel_attributes[ch_idx];
+      let notes = channel.notes_attributes;
+      let note_idx = notes.findIndex((note) => {
+        let next_note_start = note.starting_quarter_beat;
+        let curr_note_start = action.note.starting_quarter_beat;
+        return next_note_start > curr_note_start;
+      });
+
+      notes.splice(note_idx, 0, action.note);
+      
+      return newState; 
+    }
+    case REMOVE_NOTE_FROM_TRACK: {
+      let newState = _.merge({}, oldState);
+      let ch_idx = action.channel_idx;
+      let channel = newState.channel_attributes[ch_idx];
+      let notes = channel.notes_attributes;
+      let note_idx = notes.findIndex((note) => {
+        return note.id === action.note.id;
+      });
+      
+      notes[note_idx] = { id: notes[note_idx].id, _destroy: true };
+  
+      return newState;
     }
     default: {
       return oldState;
