@@ -2,13 +2,9 @@ class Api::TracksController < ApplicationController
   def create
     @track = Track.new(track_params)
     if @track.save
-      if @track.update(channel_params)
-        new_times = {start_time: 0, end_time: @track.find_end_time}
-        if @track.update(new_times)
-          render :show
-        else
-          render json: @track.errors.full_messages, status: 422
-        end
+      new_times = {start_time: 0, end_time: @track.find_end_time}
+      if @track.update(new_times)
+        render :show
       else
         render json: @track.errors.full_messages, status: 422
       end
@@ -66,10 +62,14 @@ class Api::TracksController < ApplicationController
 
   private
   def track_params
-    params.require(:track).permit(:title, :composer_id)
-  end
-
-  def channel_params
-    params.require(:track).permit(:channels)
+    params.require(:track).permit(
+      :title, :bpm, :start_time, :end_time, :composer_id, channels_attributes: [ 
+        :volume, notes_attributes: [ 
+          :freq, :waveform,
+          :starting_quarter_beat, :ending_quarter_beat, 
+          :start_volume, :end_volume 
+        ] 
+      ]
+    )
   end
 end
