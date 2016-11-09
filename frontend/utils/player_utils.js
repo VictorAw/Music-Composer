@@ -60,8 +60,8 @@ class Track {
 
     // Setup noteData 
     this.noteData = [];
-    trackData.channels.forEach((channel) => {
-      channel.notes.forEach((note) => {
+    trackData.channels_attributes.forEach((channel) => {
+      channel.notes_attributes.forEach((note) => {
         this.noteData.push(note);
       });
     });
@@ -151,7 +151,6 @@ class Track {
         this.playQueue[this.playQueue.length-1].onended = this.finish;
         clearInterval(this.playQueueGen);
       }
-
     }, 1000);
 
     let rend = new Date();

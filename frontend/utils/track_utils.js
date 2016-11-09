@@ -1,23 +1,37 @@
-export const fetchTrack = (id, success) => {
+export const createTrack = (track, success, error) => {
+  $.ajax({
+    type: "POST",
+    url: "api/tracks",
+    data: {track},
+    success,
+    error
+  });
+}
+
+export const fetchTrack = (id, success, error) => {
   $.ajax({
     type: "GET",
     url: `api/tracks/${id}`,
-    success
+    success,
+    error
   });
 }
 
-export const updateTrack = (track, success) => {
+export const updateTrack = (track, success, error) => {
   $.ajax({
     type: "PATCH",
     url: `api/tracks/${track.id}`,
-    success
+    data: {track},
+    success,
+    error
   });
 }
 
-export const deleteTrack = (id, success) => {
+export const deleteTrack = (id, success, error) => {
   $.ajax({
     type: "DELETE",
     url: `api/tracks/${id}`,
-    success
+    success,
+    error
   });
 }
