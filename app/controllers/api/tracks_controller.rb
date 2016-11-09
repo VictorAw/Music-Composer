@@ -1,6 +1,6 @@
 class Api::TracksController < ApplicationController
   def create
-    @track = Track.new(track_params)
+    @track = Track.new(track_create_params)
     if @track.save
       new_times = {start_time: 0, end_time: @track.find_end_time}
       if @track.update(new_times)
@@ -16,7 +16,7 @@ class Api::TracksController < ApplicationController
   def update
     @track = Track.find(params[:id])
     if @track
-      if @track.update(track_params) && @track.update(channel_params)
+      if @track.update(track_update_params)
         # Update start time and end time with new note data
         new_times = {start_time: 0, end_time: @track.find_end_time}
         if @track.update(new_times)
@@ -30,7 +30,6 @@ class Api::TracksController < ApplicationController
     else
       render json: ["Track not found"], status: 404
     end
-      
   end
 
   def show
@@ -61,7 +60,7 @@ class Api::TracksController < ApplicationController
   end
 
   private
-  def track_params
+  def track_create_params
     params.require(:track).permit(
       :title, :bpm, :start_time, :end_time, :composer_id, channels_attributes: [ 
         :volume, notes_attributes: [ 
@@ -69,6 +68,19 @@ class Api::TracksController < ApplicationController
           :starting_quarter_beat, :ending_quarter_beat, 
           :start_volume, :end_volume 
         ] 
+      ]
+    )
+  end
+
+  def track_update_params
+    params.require(:track).permit(
+      :title, :bpm, :start_time, :end_time, :composer_id, channels_attributes: [
+        :id, :volume, notes_attributes: [
+          :id, :_destroy,
+          :freq, :waveform,
+          :starting_quarter_beat, :ending_quarter_beat,
+          :start_volume, :end_volume
+        ]
       ]
     )
   end
