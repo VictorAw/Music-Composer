@@ -1,6 +1,7 @@
 import React from "react";
 import { Stage, Layer, Group } from "react-konva";
 import Row from "./row";
+import Timeline from "./timeline";
 
 import { Rect } from "react-konva";
 
@@ -45,7 +46,7 @@ class Editor extends React.Component {
           <div className="editor-timeline" ref="timeline">
             <Stage width={this.timelineWidth} height={this.timelineHeight}>
               <Layer>
-                <Rect x={0} y={this.scroll.y}
+                <Rect x={0} y={0}
                       width={this.timelineWidth}
                       height={this.timelineHeight}
                       fill="blue" listening="false"/>
@@ -61,7 +62,7 @@ class Editor extends React.Component {
             <div className="editor-sidebar" ref="sidebar">
               <Stage width={this.pitchSidebarWidth} height={this.pitchSidebarHeight}>
                 <Layer>
-                  <Rect x={this.scroll.x} y={0}
+                  <Rect x={0} y={0}
                     width={this.pitchSidebarWidth}
                     height={this.pitchSidebarHeight}
                     fill="green" listening="false"/>
