@@ -65,7 +65,7 @@ class Editor extends React.Component {
                     width={this.pitchSidebarWidth}
                     height={this.pitchSidebarHeight}
                     fill="green" listening="false"/>
-                  <Rect x={this.state.scroll.x + 5} y={5}
+                  <Rect x={5} y={5}
                     width={20} height={20}
                     fill="black" listening="false"/>
                 </Layer>
