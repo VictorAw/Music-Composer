@@ -37,8 +37,9 @@ class Editor extends React.Component {
     // Offset is because the canvas is shifted over by the sidebar
     // and because the sidebar is increased in length to account
     // for the extra distance that the canvas can scroll
-    let offset = this.pitchSidebarWidth * 2
+    let offset = this.pitchSidebarWidth * 2;
     if (row.scrollWidth + offset === this.refs.timeline.scrollWidth) {
+      console.log("Scrolling");
       this.refs.timeline.scrollLeft = row.scrollLeft;
     }
 
@@ -54,19 +55,42 @@ class Editor extends React.Component {
     return (
       <div className="editor-container">
         <div className="editor-main-column">
-          
-          <div className="editor-timeline" ref="timeline">
-            <Timeline
-              x={0} y={0}
-              width={this.timelineWidth}
-              height={this.timelineHeight}
-              pitchSidebarWidth={this.pitchSidebarWidth}
-              qbeatWidth={this.qbeatWidth}
-              qbeatsPerRow={this.qbeatsPerRow}
-            /> 
+          <div className="editor-timeline-row">
+            <div className="editor-corner">
+                <Stage
+                  width={this.pitchSidebarWidth}
+                  height={this.timelineHeight}>
+                  <Layer>
+                    <Rect
+                      x={0}
+                      y={0}
+                      width={this.pitchSidebarWidth}
+                      height={this.timelineHeight}
+                      fill="gray"/>
+                    <Line
+                      points={[
+                        this.pitchSidebarWidth-2, 0,
+                        this.pitchSidebarWidth-2, this.timelineHeight
+                      ]}
+                      stroke="red"
+                      strokeWidth={4} />
+                  </Layer>
+                </Stage>
+              </div>
+
+            <div className="editor-timeline" ref="timeline">
+              <Timeline
+                x={0} y={0}
+                width={this.timelineWidth}
+                height={this.timelineHeight}
+                pitchSidebarWidth={this.pitchSidebarWidth}
+                qbeatWidth={this.qbeatWidth}
+                qbeatsPerRow={this.qbeatsPerRow}
+              /> 
+            </div>
           </div>
        
-          <div className="editor-row" onScroll={this.handleScroll}>
+          <div className="editor-workspace-row" onScroll={this.handleScroll}>
             <div className="editor-sidebar" ref="sidebar">
               <Sidebar
                 x={0}

@@ -9,13 +9,19 @@
 
 }
 
-.editor-row {
+.editor-workspace-row {
   display: flex;
   height: 400px;
 }
 
 .editor-canvas-container {
   overflow: scroll;
+}
+
+.editor-timeline-row {
+  display: flex;
+  width: 600px;
+  overflow: hidden;
 }
 
 .editor-timeline {

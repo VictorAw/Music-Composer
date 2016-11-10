@@ -21,7 +21,7 @@ class Timeline extends React.Component {
         thickness = 3;
       }
 
-      let offset = this.props.pitchSidebarWidth + (thickness / 2);
+      let offset = (thickness / 2);
       let lineX = offset + (i * qbeatWidth);
       let startY = this.props.height / 2;
       lines.push(
@@ -46,11 +46,10 @@ class Timeline extends React.Component {
     let lines = [];
     this.populateGuidelines(lines, this.props.height);
 
-    let offset = this.props.pitchSidebarWidth;
     let qbeatWidth = this.props.qbeatWidth;
     for (let i=1; i<=this.props.qbeatsPerRow; i++) {
       // Text every beats
-      let textX = offset + (((i-1) * qbeatWidth) * 4) - 2;
+      let textX = (((i-1) * qbeatWidth) * 4) - 2;
       // Cell every quarter beat
       text.push(
           <Text 
