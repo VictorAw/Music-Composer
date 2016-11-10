@@ -47,9 +47,8 @@ export const addNoteToTrack = (note) => ({
   note 
 });
 
-export const removeNoteFromTrack = (channel_idx, note_idx) => ({
+export const removeNoteFromTrack = (note) => ({
   type: REMOVE_NOTE_FROM_TRACK,
-  channel_idx,
-  note_idx
+  note
 });
 
