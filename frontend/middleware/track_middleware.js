@@ -10,7 +10,7 @@ import { CREATE_TRACK,
 import { receiveTrack, 
          playingTrack } from "../actions/track_actions";
 
-import Track from "../utils/player_utils";
+import { Track } from "../utils/player_utils";
 
 const TrackMiddleware = ({ getState, dispatch }) => next => action => {
   const successCallback = (track) => dispatch(receiveTrack(track));

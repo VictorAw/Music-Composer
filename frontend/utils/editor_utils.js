@@ -3,7 +3,7 @@ const a = 1.059463094359295264561825294946341700779204317;
 const PITCH_LETTERS = ["C", "B", "B", "A", "A", "G", "F", "F", "E", "E", "D", "C"];
 const ACCIDENTALS = {2: "b", 9: "b", 4: "b", 6: "#", 11: "#"}
 // Mapping of all frequencies to get instant lookup
-const FREQUENCIES = {
+export const FREQUENCIES = {
   "A0": 27.50, "Bb0": 29.14, "B0": 30.87, 
   "C1": 32.70, "C#1": 34.65, "D1": 36.71, 
     "Eb1": 38.89, "E1": 41.20, "F1": 43.65, 
@@ -34,14 +34,13 @@ const FREQUENCIES = {
     "F#7": 2959.96, "G7": 3135.96, "Ab7": 3322.44, 
     "A7": 3520.00, "Bb7": 3729.31, "B7": 3951.07,
   "C8": 4186.01
-}
+};
 
-//export const rowIdxToNoteName = (rowIdx) => {
-function rowIdxToNoteName(rowIdx) {
+export const rowIdxToNoteName = (rowIdx) => {
   let pitch = PITCH_LETTERS[rowIdx % 12];
   let accidental = ACCIDENTALS[rowIdx % 12] || "";
   let octave = (Math.floor((96 - rowIdx) / 12)).toString();
 
   return pitch + accidental + octave;
-}
+};
 

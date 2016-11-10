@@ -2,6 +2,7 @@ import React from "react";
 import { Stage, Layer, Group } from "react-konva";
 import Row from "./row";
 import Timeline from "./timeline";
+import Sidebar from "./sidebar";
 
 import { Rect, Line } from "react-konva";
 
@@ -24,7 +25,6 @@ class Editor extends React.Component {
   
   handleRowClick(id) {
     return (e) => {
-      console.log(e);
       console.log(`Row ${id} clicked at ` + e.evt.layerX);
       this.setState({mousePos: {x: e.evt.layerX, y: e.evt.layerY}});
     }
@@ -50,7 +50,6 @@ class Editor extends React.Component {
 
   render() {
     // Calculate where the note blocks go using the redux store's track
-    console.log("rendering");
 
     return (
       <div className="editor-container">
@@ -69,17 +68,14 @@ class Editor extends React.Component {
        
           <div className="editor-row" onScroll={this.handleScroll}>
             <div className="editor-sidebar" ref="sidebar">
-              <Stage width={this.pitchSidebarWidth} height={this.pitchSidebarHeight}>
-                <Layer>
-                  <Rect x={0} y={0}
-                    width={this.pitchSidebarWidth}
-                    height={this.pitchSidebarHeight}
-                    fill="green" listening="false"/>
-                  <Rect x={5} y={5}
-                    width={20} height={20}
-                    fill="black" listening="false"/>
-                </Layer>
-              </Stage>
+              <Sidebar
+                x={0}
+                y={0}
+                width={this.pitchSidebarWidth}
+                height={this.pitchSidebarHeight}
+                pitchCount={this.pitchCount}
+                rowHeight={this.rowHeight}
+              />
             </div>
             
             <div className="editor-canvas-container">

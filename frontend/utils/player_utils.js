@@ -1,16 +1,16 @@
-function qbeatToS(qbeat, bpm) {
+export const qbeatToS = (qbeat, bpm) => {
   return (qbeat / 4.0) * (60.0 / bpm);
 }
 
-function sToQbeat(s, bpm) {
+export const sToQbeat = (s, bpm) => {
   return ((s * (bpm / 60.0)) * 4);
 }
 
-class Note {
+export class Note {
   constructor(ctx,
               freq,
               start_vol, end_vol, 
-              start_qbeat, end_qbeat, bpm) {
+              bpm, start_qbeat, end_qbeat=undefined) {
     this.ctx = ctx;
     this.oscillator = ctx.createOscillator();
     this.volume = ctx.createGain();
@@ -27,17 +27,22 @@ class Note {
     // Start, end, duration, and currentTime are in seconds
     let currTime = ctx.currentTime;
     let start = qbeatToS(start_qbeat, bpm);
-    let end = qbeatToS(end_qbeat, bpm) - 0.05; // Slight separation of notes
-    let duration = end - start;
+    let end = 0;
+    let duration = 0;
+    if (end_qbeat) {
+      end = qbeatToS(end_qbeat, bpm) - 0.05; // Slight separation of notes
+      duration = end - start;
+    }
 
     // Set the oscillator's frequency
     this.oscillator.frequency.value = freq;
-    console.log(this.oscillator);
 
     // Set the start time, end time, and volume of the note
     this.oscillator.start(start);
-    this.oscillator.stop(end);
-    this.volume.gain.setValueCurveAtTime(vols, start, duration);
+    if (end_qbeat) {
+      this.oscillator.stop(end);
+      this.volume.gain.setValueCurveAtTime(vols, start, duration);
+    }
   }
 
   stop() {
@@ -50,7 +55,7 @@ class Note {
   }
 }
 
-class Track {
+export class Track {
   constructor(trackData) {
     this.trackData = trackData;
     this.playing = false;
@@ -116,9 +121,9 @@ class Track {
               noteDatum.freq,
               noteDatum.start_volume,
               noteDatum.end_volume,
+              this.bpm,
               noteDatum.starting_quarter_beat,
-              noteDatum.ending_quarter_beat,
-              this.bpm
+              noteDatum.ending_quarter_beat
               )
         );
       }
@@ -195,5 +200,3 @@ class Track {
     });
   }
 }
-
-export default Track;
