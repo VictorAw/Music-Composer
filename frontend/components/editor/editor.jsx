@@ -1,8 +1,9 @@
 import React from "react";
 import { Stage, Layer, Group } from "react-konva";
 import Row from "./row";
+import Timeline from "./timeline";
 
-import { Rect } from "react-konva";
+import { Rect, Line } from "react-konva";
 
 class Editor extends React.Component {
   constructor(props) {
@@ -43,18 +44,14 @@ class Editor extends React.Component {
         <div className="editor-main-column">
           
           <div className="editor-timeline" ref="timeline">
-            <Stage width={this.timelineWidth} height={this.timelineHeight}>
-              <Layer>
-                <Rect x={0} y={0}
-                      width={this.timelineWidth}
-                      height={this.timelineHeight}
-                      fill="blue" listening="false"/>
-                <Rect x={5} y={5}
-                      width={20}
-                      height={20}
-                      fill="black" listening="false"/>
-              </Layer>
-            </Stage>
+            <Timeline
+              x={0} y={0}
+              width={this.timelineWidth}
+              height={this.timelineHeight}
+              pitchSidebarWidth={this.pitchSidebarWidth}
+              qbeatWidth={this.qbeatWidth}
+              qbeatsPerRow={this.qbeatsPerRow}
+            /> 
           </div>
        
           <div className="editor-row" onScroll={this.handleScroll}>
@@ -76,6 +73,7 @@ class Editor extends React.Component {
               <Stage width={this.canvasWidth} height={this.canvasHeight}>
                 <Layer>
                   {this.rows}
+                  {this.guidelines}
                 </Layer>
               </Stage>
             </div>
@@ -93,7 +91,7 @@ class Editor extends React.Component {
     this.qbeatsPerRow = 480;
 
     this.rowWidth = this.qbeatsPerRow * this.qbeatWidth;
-    this.rowHeight = 20;
+    this.rowHeight = 25;
 
     this.pitchSidebarWidth = 40;
     this.timelineWidth = this.rowWidth + this.pitchSidebarWidth;
@@ -106,6 +104,14 @@ class Editor extends React.Component {
 
     // Row array population
     this.rows = [];
+    this.populateRows();
+
+    // Guideline array population
+    this.guidelines = [];
+    this.populateGuidelines();
+  }
+
+  populateRows() {
     for (let rowId=0; rowId<this.pitchCount; rowId++) {
       // Alternate colors
       let color = "gray";
@@ -115,16 +121,44 @@ class Editor extends React.Component {
 
       this.rows.push(
         <Row x={0} 
+          key={rowId}
           y={rowId * this.rowHeight} 
           width={this.rowWidth} 
           height={this.rowHeight} 
           color={color}
-          key={rowId}
           handleRowClick={this.handleRowClick(rowId)}
         />
       )
     }
   }
+
+  populateGuidelines() {
+    // We want to draw a line at the beginning
+    // and also one at the end, so we go from
+    // 0 to <= number of qbeats
+    let qbeatWidth = this.qbeatWidth;
+    let lineEndY = this.canvasHeight;
+    for (let i=0; i<=this.qbeatsPerRow; i++) {
+      let thickness = 1;
+      if (i % 4 === 0) {
+        thickness = 3;
+      }
+
+      let lineX = (i * qbeatWidth) + (thickness / 2);
+
+      this.guidelines.push(
+        <Line
+          key={i}
+          points={[
+            lineX, 0, lineX, lineEndY
+          ]}
+          stroke="#3a3f47"
+          strokeWidth={thickness}
+        />
+      );
+    }
+  }
+
 }
 
 export default Editor;
