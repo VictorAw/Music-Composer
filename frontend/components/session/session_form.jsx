@@ -19,6 +19,12 @@ class SessionForm extends React.Component {
     this.redirectIfLoggedIn();
   }
 
+  componentWillReceiveProps(nextProps) {
+    if (this.props.formType !== nextProps.formType) {
+      this.props.clearErrors();
+    }
+  }
+
   redirectIfLoggedIn() {
     if (this.props.loggedIn) {
       this.props.router.push("/");
@@ -28,45 +34,44 @@ class SessionForm extends React.Component {
   redirectLink() {
     if (this.props.formType === "login") {
       return (
-        <div id="form-redirect-link">{"Don't have an account?"}<Link to="/signup">Sign up!</Link></div>
+        <div className="session-redirect-link">
+          <p>{"Don't have an account?"}</p>
+          <Link to="/signup">Sign up!</Link>
+        </div>
       );
     }
     else {
       return (
-        <div id="form-redirect-link">{"Already have an account?"}<Link to="/login">Log in!</Link></div> 
+        <div className="session-redirect-link">
+          <p>{"Already have an account?"}</p>
+          <Link to="/login">Log in!</Link>
+        </div> 
       );
     }
   }
 
-  emailField() {
+  emailInput() {
     if (this.props.formType === "signup") {
       return (
-        <label id="email-field" className="login-field">
-          Email:
-          <input id="email-input" 
-          className="login-input"
-          onChange={this.update("email")} />
-        </label>
-      );
-    }
-  }
-
-  descriptionField() {
-    if (this.props.formType === "signup") {
-      return (
-        <label id="description-field" className="login-field">
-          Description:
-          <textarea id="description-input"
-                    className="login-input"
-                    onChange={this.update("description")} />
-        </label>
+        <div className="session-form-email">
+          <label id="email-field" className="login-field">
+            <input id="email-input" 
+            className="login-input"
+            placeholder="Email"
+            onChange={this.update("email")} />
+          </label>
+          { this.errors("Email") }
+        </div>
       );
     }
   }
 
   guestLogin() {
     return (
-      <div id="guest-login-link">{"Want to take a tour?"}<Link to="#" onClick={this.handleGuestLogin}>Guest login!</Link></div>
+      <div className="session-redirect-link">
+        <p>{"Want to take a tour?"}</p>
+        <Link to="#" onClick={this.handleGuestLogin}>Guest login!</Link>
+      </div>
     )
   }
 
@@ -89,35 +94,50 @@ class SessionForm extends React.Component {
     return (e) => (this.setState({[field]: e.currentTarget.value}));
   }
 
+  errors(containedWord) {
+    return (
+      this.props.errors.map((error) => {
+        if (error.includes(containedWord)) {
+          return (<p key={error} className="login-errors">{error}</p>)
+        }
+      })
+    )
+  }
+
   render() {
     let title = (this.props.formType === "login") ? "Log in" : "Sign up";
-    console.log(this.props.errors.full_messages);
     return (
       <form onSubmit={this.handleSubmit} className="login-form" id="login-form">
         <h1>{title}</h1>
         { this.redirectLink() }
         { this.guestLogin() }
-        <label id="username-field" className="login-field">
-          Username:
-          <input id="username-input" 
-                 className="login-input"
-                 onChange={this.update("username")} />
-        </label>
 
-        { this.emailField() }
+        <div className="session-inputs">
+          { this.emailInput() }
 
-        <label id="password-field" className="login-field">
-          Password:
-          <input id="password-input"
-                 type="password"
-                 className="login-input"
-                 onChange={this.update("password")} />
-        </label>
+          <div className="session-form-username">
+            <label id="username-field" className="login-field">
+              <input id="username-input" 
+                     className="login-input"
+                     placeholder="Username"
+                     onChange={this.update("username")} />
+            </label>
+            { this.errors("Username") }
+          </div>
 
-        { this.descriptionField() }
-
+          <div className="session-form-password">
+            <label id="password-field" className="login-field">
+              <input id="password-input"
+                     type="password"
+                     className="login-input"
+                     placeholder="Password"
+                     onChange={this.update("password")} />
+            </label>
+            { this.errors("Password") }
+          </div>
+        
+        </div>
         <input type="submit" 
-               id="login-submit" 
                className="login-submit"
                value="Submit" />
       </form> 
