@@ -1,7 +1,6 @@
 import React from "react";
 import { Stage, Layer, Group } from "react-konva";
 import Row from "./row";
-import Timeline from "./timeline";
 
 import { Rect } from "react-konva";
 
