@@ -38,11 +38,15 @@ const TrackReducer = (oldState=_emptyTrack, action) => {
       let ch_idx = action.channel_idx;
       let channel = newState.channel_attributes[ch_idx];
       let notes = channel.notes_attributes;
-      let note_idx = notes.findIndex((note) => {
-        return note.id === action.note.id;
-      });
+      let note_idx = action.note_idx; 
+
+      if (notes[note_idx].id) {
+        notes[note_idx] = { id: notes[note_idx].id, _destroy: true };
+      }
+      else {
+        notes.splice(note_idx, 1);
+      }
       
-      notes[note_idx] = { id: notes[note_idx].id, _destroy: true };
   
       return newState;
     }
