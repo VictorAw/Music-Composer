@@ -4,6 +4,7 @@ import { Stage,
          Rect, 
          Text, 
          Line } from "react-konva";
+import { rowIdxToNoteNames } from "../../utils/editor_utils";
 
 const Sidebar = (props) => {
   let rects = [];
@@ -31,8 +32,8 @@ const Sidebar = (props) => {
       <Text key={rowId}
             x={props.width/2}
             y={textY}
-            text={}
-            fontSize={}
+            text={rowIdxToNoteNames(rowId)}
+            fontSize={12}
             fill=""/>
     )
   }

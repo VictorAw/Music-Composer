@@ -32,12 +32,25 @@ class Editor extends React.Component {
 
   handleScroll(e) {
     let row = e.nativeEvent.target;
-    this.refs.timeline.scrollLeft = row.scrollLeft;
-    this.refs.sidebar.scrollTop = row.scrollTop;
+    // Sometimes scrolling past the end of the scrollbar produces weird behavior
+    // This prevents the timeline from jumping around due to the weird behavior
+    // Offset is because the canvas is shifted over by the sidebar
+    // and because the sidebar is increased in length to account
+    // for the extra distance that the canvas can scroll
+    let offset = this.pitchSidebarWidth * 2
+    if (row.scrollWidth + offset === this.refs.timeline.scrollWidth) {
+      this.refs.timeline.scrollLeft = row.scrollLeft;
+    }
+
+    // Canvas
+    if (row.scrollHeight === this.refs.sidebar.scrollHeight) {
+      this.refs.sidebar.scrollTop = row.scrollTop;
+    }
   }
 
   render() {
     // Calculate where the note blocks go using the redux store's track
+    console.log("rendering");
 
     return (
       <div className="editor-container">
@@ -94,12 +107,16 @@ class Editor extends React.Component {
     this.rowHeight = 25;
 
     this.pitchSidebarWidth = 40;
-    this.timelineWidth = this.rowWidth + this.pitchSidebarWidth;
+    // We need to make the timeline an extra sidebar width wider
+    // because the editor rows are shifted over by a sidebar width
+    // but their canvas starts at the same location as the
+    // sidebar's canvas, so it has more distance that it can scroll
+    this.timelineWidth = this.rowWidth + (this.pitchSidebarWidth * 2);
 
     this.timelineHeight = this.rowHeight;
-    this.pitchSidebarHeight = (this.pitchCount * this.rowHeight) + this.timelineHeight;
+    this.pitchSidebarHeight = (this.pitchCount * this.rowHeight);
 
-    this.canvasWidth = (this.qbeatsPerRow * this.qbeatWidth);
+    this.canvasWidth = this.rowWidth;
     this.canvasHeight = (this.pitchCount * this.rowHeight);
 
     // Row array population
