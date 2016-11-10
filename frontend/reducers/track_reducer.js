@@ -1,5 +1,6 @@
 import { RECEIVE_TRACK,
          ADD_NOTE_TO_TRACK,
+         UPDATE_NOTE_IN_TRACK,
          REMOVE_NOTE_FROM_TRACK } from "../actions/track_actions";
 import _ from "lodash";
 
