@@ -1,6 +1,11 @@
 import { connect } from "react-redux";
 import Editor from "./editor";
-import { requestTrack, addNoteToTrack, removeNoteFromTrack, updateTrack } 
+import { requestTrack,
+         createTrack,
+         updateTrack,
+         addNoteToTrack, 
+         updateNoteInTrack,
+         removeNoteFromTrack } 
   from "../../actions/track_actions";
 
 function mapStateToProps(state) {
@@ -12,7 +17,12 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
   return {
-    requestTrack: (id) => dispatch(requestTrack(id))
+    createTrack: (track) => dispatch(createTrack(track)),
+    requestTrack: (id) => dispatch(requestTrack(id)),
+    updateTrack: (track) => dispatch(updateTrack)
+    addNoteToTrack: (ch, note) => dispatch(addNoteToTrack(ch, note)),
+    updateNoteInTrack: (ch, nIdx, note) => dispatch(updateNoteInTrack(ch, nIdx, note)),
+    removeNoteFromTrack: (ch, nIdx) => dispatch(removeNoteFromTrack(ch, nIdx))
   }
 }
 

@@ -50,10 +50,10 @@ class Workspace extends React.Component {
     }
   }
 
-  handleNoteBlockClick(id) {
-    return (e) => {
-      console.log("Block " + id + " clicked");
-    } 
+  handleNoteBlockClick(idx) {
+    console.log("Block " + idx + " clicked");
+    // Update Note in Track passing in idx
+    return this.props.updateNoteInTrack(idx);
   }
 
   render() {
@@ -72,6 +72,7 @@ class Workspace extends React.Component {
         noteBlocks.push(
           <NoteBlock 
             key={idx}
+            idx={idx}
             notes={notes}
             x={(note.starting_quarter_beat * this.qbeatWidth)}
             y={(rowIdx * this.rowHeight)}
@@ -80,7 +81,7 @@ class Workspace extends React.Component {
             qbeatWidth={this.qbeatWidth}
             rowHeight={this.rowHeight}
             offsetY={1}
-            handleNoteBlockClick={this.handleNoteBlockClick(idx)}
+            updateNoteInTrack={this.handleNoteBlockClick(idx)}
           /> 
         )
       });

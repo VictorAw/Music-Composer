@@ -51,18 +51,17 @@ class NoteBlock extends React.Component {
   }
 
   expandLeftEnd(evt) {
-    console.log(evt.evt);
     // Get the block's quarter beat from its position
     // Alter the note's quarter beat
-    let qbeatWidth = this.props.qbeatWidth;
     let qbeat = evt.target.layerX / this.props.qbeatWidth;
-    let thisBlock = this.refs.this;
-    let excess = evt.evt.layerX % qbeatWidth;
-    console.log(excess);
-    let newBlockX = thisBlock.getX() - excess;
-    let newBlockWidth = thisBlock.getWidth() + excess;
-    thisBlock.setX(newBlockX);
-    thisBlock.setWidth(newBlockWidth);
+    let thisNote = this.props.notes[this.props.idx];
+    let freq = thisNote.freq;
+    this.props.notes.forEach((note) => {
+      if (note.freq === freq && note.ending_quarter_beat > qbeat) {
+        thisNote.starting_quarter_beat = note.ending_quarter_beat;
+      }
+    });
+    this.props.updateNoteInTrack(thisNote);
   }
 
   expandRightStart(evt) {
