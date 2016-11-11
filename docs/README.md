@@ -6,36 +6,33 @@
 
 Music Composer is a full-stack web application that allows a user to compose a music track by dragging and dropping blocks representing music notes into a timeline. It utilizes Ruby on Rails on the back-end, PostgreSQL for the database, and React.js along with Redux for the front-end.
 
+![Screenshot]
+(https://postimg.org/image/emhr1c7ht/ff2b0f36/)
+
 # Features & Implementation
 
 ### Track Creation and Editing
 
-Tracks are stored in the database in one table containing the track id and the composer's id. Tracks are connected to the Notes within that track through a join table connecting each Track to the Notes associated with that Track. On login, Tracks belonging to the logged in user are fetched by an API call through a fetch table and held within the `current_user` section of the Redux store.
+Tracks are stored in the database in a table and connected to the Notes table through ActiveRecord associations. A Track has many Channels, which in turn have many Notes. The ActiveRecord associations are made in such a way that a Track object can be created all at once, with ActiveRecord automatically updating the Notes table with the new state.
 
-Note data drawn onto an HTML canvas using the Konva library using React Konva. The user will interact with the canvas through events, allowing the user to click on and drag and drop items on the canvas. Each interaction the user has with the canvas will update the note data in the store.
-
-When the user clicks the save button, the tracks will be saved from the store into the database through an API call.
-
-Music will be playable through the browser's web audio api.
+In the editor, all Notes in the selected Channel of the currently edited Track are rendered to the workspace through React Konva. The user interacts with the React Konva components to edit the state of the Track in the redux store and then can save the redux store's Track into the database by pressing the "Save Track" button on the editor.
 
 ### Music Playback
 
-Each channel in a music track will have an associated `gainNode`, to allow each channel to have its own volumne and to allow channels to be muted.
-
-Each `Note` in a `Chord` will create an `Oscillator` that will generate the music tone for the note's duration. If this proves to be too slow, then an Oscillator pool can be created and oscillators allocated a note when the playback time reaches the note.
+Tracks can be played back through an API written that will use the Track data in the redux store to generate a Web Audio API AudioContext, the Oscillators required to play the notes, and one GainNode for each Oscillator. Due to the number of Oscillators and GainNodes being produced, only ten thousand notes are generated every second so that the impact on the user's experience is minimized. Ten thousand notes can be generated in approximately 0.2 seconds on the machine used for testing the website.
 
 ### Users
 
-Users are stored in a table in the database and have an associated description to render in the Profile component. Each user is connected to their associated Tracks through a join table joining each Track's `composer_id` with the User's `id`.
+Users are stored in a table in the database. An API call to get a single user will also provide a list of the track titles and ids of tracks created by the chosen user.
 
 ## Future Directions for the Project
 
 After the features above have been implemented, the following features may be added:
 
-### Alternative music editor
-
-A more visual music editor will be added, allowing users to click on a grid to "activate" the note at that position in time.
-
-### Exporting music files
-
-The ability to save tracks as .midi, .wav, and/or .ogg files will be added
+Save tracks as .midi, .wav, and/or .ogg files
+Browse and search through users and their tracks
+Upload profile pictures
+Remove channels from a track
+Change the Oscillator's waveform
+View note data in a sidebar in the editor
+Alter note volume data in the note data sidebar
