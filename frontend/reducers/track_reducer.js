@@ -9,7 +9,7 @@ const _emptyTrack = {
   title: "Untitled",
   bpm: 60,
   length: 0,
-  channels: []
+  channels_attributes: []
 };
 
 const TrackReducer = (oldState=_emptyTrack, action) => {
