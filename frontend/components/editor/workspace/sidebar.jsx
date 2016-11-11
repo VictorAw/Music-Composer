@@ -4,9 +4,9 @@ import { Stage,
          Rect, 
          Text, 
          Line } from "react-konva";
-import { rowIdxToNoteName,
-         FREQUENCIES } from "../../utils/editor_utils";
-import { Note } from "../../utils/player_utils";
+import { ROW_IDX_TO_NOTE_NAME,
+         NOTE_NAME_TO_FREQ } from "../../../utils/editor_utils";
+import { Note } from "../../../utils/player_utils";
 
 class Sidebar extends React.Component {
   constructor(props) {
@@ -25,8 +25,10 @@ class Sidebar extends React.Component {
     return (e) => {
       console.log("Sidebar Row " + id + " mouse down");
       this.mouseDown = true;
+      let note_name = ROW_IDX_TO_NOTE_NAME[id];
+      let freq = NOTE_NAME_TO_FREQ[note_name];
       this.note = new Note(this.ctx,
-                           FREQUENCIES[rowIdxToNoteName(id)],
+                           freq,
                            0.3, 0.3,
                            60, 0);
     }
@@ -45,8 +47,10 @@ class Sidebar extends React.Component {
     return (e) => {
       this.setState({highlighted: id}); 
       if (this.mouseDown) {
+        let note_name = ROW_IDX_TO_NOTE_NAME[id];
+        let freq = NOTE_NAME_TO_FREQ[note_name];
         this.note = new Note(this.ctx,
-                             FREQUENCIES[rowIdxToNoteName(id)],
+                             freq,
                              0.3, 0.3,
                              60, 0); 
       }
@@ -98,7 +102,7 @@ class Sidebar extends React.Component {
         <Text key={rowId}
               x={this.props.width/4}
               y={textY}
-              text={rowIdxToNoteName(rowId)}
+              text={ROW_IDX_TO_NOTE_NAME[rowId]}
               fontSize={12}
               fill={textColor}
               onMouseDown={this.handleMouseDown(rowId)}

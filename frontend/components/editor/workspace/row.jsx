@@ -33,7 +33,6 @@ class Row extends React.Component {
       
     return (
       <Rect
-        draggable="false"
         x={this.props.x}
         y={this.props.y}
         width={this.props.width}

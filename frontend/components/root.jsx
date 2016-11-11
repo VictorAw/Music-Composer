@@ -42,10 +42,9 @@ const Root = ({store}) => {
 
           <Route path="/users/:userId/tracks/:trackId/edit" component={EditorContainer} onEnter={_ensureLoggedIn}>
           </Route>
-
-          <Route path="/edit" component={EditorContainer}>
-          </Route>
         </Route> 
+        <Route path="/edit" component={EditorContainer}>
+        </Route>
       </Router>
     </Provider>
   );
