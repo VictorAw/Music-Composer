@@ -1,36 +1,11 @@
 .editor-container {
-  width: 600px;
-  height: 400px;
-}
-
-.editor-main-column {
-  display: flex;
-  flex-direction: column;
-
+  width: 100%;
+  height: 100%;
 }
 
 .editor-workspace-row {
+  width: 100%;
+  height: 100%;
+  
   display: flex;
-  height: 400px;
 }
-
-.editor-canvas-container {
-  overflow: scroll;
-}
-
-.editor-timeline-row {
-  display: flex;
-  width: 600px;
-  overflow: hidden;
-}
-
-.editor-timeline {
-  width: 600px;
-  overflow: hidden;
-}
-
-.editor-sidebar {
-  min-width: fit-content;
-  overflow: hidden;
-}
-

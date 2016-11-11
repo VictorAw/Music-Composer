@@ -15,6 +15,6 @@ html, body, .root, .page-container {
 }
 
 body {
-  font-family: "Roboto", sans-serif;
-  background-color: white;
+/*  font-family: "Roboto", sans-serif;*/
+  background-color: #555555;
 }
