@@ -1,5 +1,7 @@
 import React from "react";
 import { Layer, Rect, Group } from "react-konva";
+import { NOTE_NAME_TO_FREQ,
+         ROW_IDX_TO_NOTE_NAME } from "../../../utils/editor_utils";
 
 class NoteBlock extends React.Component {
   constructor(props) {
@@ -35,6 +37,15 @@ class NoteBlock extends React.Component {
     //  previous block
     // Snap to nearest row
     // Alter the note information to match the new position/size
+    let qbeat = Math.floor(evt.target.getAbsolutePosition().x / this.props.qbeatWidth);
+    let rowIdx = Math.floor((evt.target.getAbsolutePosition().y + (this.props.rowHeight / 2)) / this.props.rowHeight);
+    let thisNote = this.props.notes[this.props.idx];
+
+    thisNote.starting_qbeat = qbeat;
+    let noteName = ROW_IDX_TO_NOTE_NAME[rowIdx];
+    thisNote.freq = NOTE_NAME_TO_FREQ[noteName];
+    
+    this.props.updateNoteInTrack(thisNote);  
   }
 
   expandLeftStart(evt) {
@@ -53,14 +64,20 @@ class NoteBlock extends React.Component {
   expandLeftEnd(evt) {
     // Get the block's quarter beat from its position
     // Alter the note's quarter beat
-    let qbeat = evt.target.layerX / this.props.qbeatWidth;
+    let qbeat = Math.floor(evt.target.layerX / this.props.qbeatWidth);
     let thisNote = this.props.notes[this.props.idx];
+    console.log(this.props.notes);
+    console.log(this.props.idx);
     let freq = thisNote.freq;
-    this.props.notes.forEach((note) => {
-      if (note.freq === freq && note.ending_quarter_beat > qbeat) {
+    thisNote.starting_quarter_beat = qbeat;
+    this.props.notes.forEach((note, idx) => {
+      if (note.freq === freq && 
+          idx !== this.props.idx &&
+          note.ending_quarter_beat > qbeat) {
         thisNote.starting_quarter_beat = note.ending_quarter_beat;
       }
     });
+
     this.props.updateNoteInTrack(thisNote);
   }
 
@@ -103,10 +120,13 @@ class NoteBlock extends React.Component {
     return (
       <Group
         ref="this"
+        draggable="true"
         x={this.props.x}
         y={this.props.y + 1}
         draggable="true"
         onClick={this.props.handleNoteBlockClick}
+        onDragStart={this.dragStart}
+        onDragEnd={this.dragEnd}
         >
         <Rect
           ref="block"

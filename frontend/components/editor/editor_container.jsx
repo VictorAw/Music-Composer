@@ -19,7 +19,7 @@ function mapDispatchToProps(dispatch) {
   return {
     createTrack: (track) => dispatch(createTrack(track)),
     requestTrack: (id) => dispatch(requestTrack(id)),
-    updateTrack: (track) => dispatch(updateTrack)
+    updateTrack: (track) => dispatch(updateTrack),
     addNoteToTrack: (ch, note) => dispatch(addNoteToTrack(ch, note)),
     updateNoteInTrack: (ch, nIdx, note) => dispatch(updateNoteInTrack(ch, nIdx, note)),
     removeNoteFromTrack: (ch, nIdx) => dispatch(removeNoteFromTrack(ch, nIdx))

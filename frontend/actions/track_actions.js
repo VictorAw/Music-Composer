@@ -43,23 +43,22 @@ export const playingTrack = (track) => ({
   track
 });
 
-export const addNoteToTrack = (note, channel_idx) => ({
+export const addNoteToTrack = (channel_idx, note) => ({
   type: ADD_NOTE_TO_TRACK,
-  note,
-  channel_idx
+  channel_idx,
+  note
 });
 
-export const udpateNoteInTrack = (note, note_idx, channel_idx) => ({
+export const updateNoteInTrack = (channel_idx, note_idx, note) => ({
   type: UPDATE_NOTE_IN_TRACK,
-  note,
+  channel_idx,
   note_idx,
-  channel_idx
+  note
 });
 
-export const removeNoteFromTrack = (note, note_idx, channel_idx) => ({
+export const removeNoteFromTrack = (channel_idx, note_idx) => ({
   type: REMOVE_NOTE_FROM_TRACK,
-  note,
-  note_idx,
-  channel_idx
+  channel_idx,
+  note_idx
 });
 

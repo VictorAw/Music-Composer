@@ -51,7 +51,6 @@ class Workspace extends React.Component {
   }
 
   handleNoteBlockClick(idx) {
-    console.log("Block " + idx + " clicked");
     // Update Note in Track passing in idx
     return this.props.updateNoteInTrack(idx);
   }

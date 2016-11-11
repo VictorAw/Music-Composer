@@ -37,7 +37,7 @@ const TrackReducer = (oldState=_emptyTrack, action) => {
     case UPDATE_NOTE_IN_TRACK: {
       let newState = _.merge({}, oldState);
       let ch_idx = action.channel_idx;
-      let channel = newState.channel_attributes[ch_idx[;
+      let channel = newState.channels_attributes[ch_idx];
       let notes = channel.notes_attributes;
       let note_idx = action.note_idx;
 
@@ -48,7 +48,7 @@ const TrackReducer = (oldState=_emptyTrack, action) => {
     case REMOVE_NOTE_FROM_TRACK: {
       let newState = _.merge({}, oldState);
       let ch_idx = action.channel_idx;
-      let channel = newState.channel_attributes[ch_idx];
+      let channel = newState.channels_attributes[ch_idx];
       let notes = channel.notes_attributes;
       let note_idx = action.note_idx; 
 
