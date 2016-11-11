@@ -30,6 +30,7 @@
 .workspace-timeline-row {
   display: flex;
   min-height: fit-content;
+  min-height: -moz-fit-content;
   overflow: hidden;
 }
 
@@ -39,6 +40,7 @@
 
 .workspace-sidebar {
   min-width: fit-content;
+  min-width: -moz-fit-content;
   overflow: hidden;
 }
 
