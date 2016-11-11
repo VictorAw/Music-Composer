@@ -4,7 +4,9 @@ import Row from "./row";
 import Timeline from "./timeline";
 import Sidebar from "./sidebar";
 import { Rect, Line } from "react-konva";
-import { NOTE_NAMES } from "../../../utils/editor_utils";
+import { FREQ_TO_NOTE_NAME, 
+         NOTE_NAME_TO_ROW_IDX } from "../../../utils/editor_utils";
+import NoteBlock from "./note_block"
 
 class Workspace extends React.Component {
   constructor(props) {
@@ -61,17 +63,24 @@ class Workspace extends React.Component {
     if (track.channels_attributes.length > 0) {
       let channel = track.channels_attributes[this.props.selectedChannel];
       let notes = channel.notes_attributes;
-      let note_name = FREQ_TO_NOTE_NAME[notes.freq];
-      let rowIdx = NOTE_NAME_TO_ROW_IDX[note_name];
       notes.forEach((note, idx) => {
+        let note_name = FREQ_TO_NOTE_NAME[note.freq];
+        let rowIdx = NOTE_NAME_TO_ROW_IDX[note_name];
+        let noteDuration = note.ending_quarter_beat - note.starting_quarter_beat;
+        let width = noteDuration * this.qbeatWidth;
+          
         noteBlocks.push(
           <NoteBlock 
-            key={note}
-            note={note}
-            x={note.starting_quarter_beat * this.qbeatWidth}
-            y={rowIdx * this.rowHeight}
-            width={this.qbeatWidth}
-            height={this.rowHeight}   
+            key={idx}
+            notes={notes}
+            x={(note.starting_quarter_beat * this.qbeatWidth)}
+            y={(rowIdx * this.rowHeight)}
+            width={width - 2}
+            height={this.rowHeight - 2}
+            qbeatWidth={this.qbeatWidth}
+            rowHeight={this.rowHeight}
+            offsetY={1}
+            handleNoteBlockClick={this.handleNoteBlockClick(idx)}
           /> 
         )
       });

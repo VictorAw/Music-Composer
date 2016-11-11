@@ -6,6 +6,12 @@ class Editor extends React.Component {
     super(props);
   }
 
+  componentWillMount() {
+    if (this.props.params.trackId) {
+      this.props.requestTrack(this.props.params.trackId);
+    }
+  }
+
   render() {
     return (
       <div className="editor-container">
