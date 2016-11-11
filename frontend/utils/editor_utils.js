@@ -110,3 +110,21 @@ export const NOTE_NAME_TO_ROW_IDX = {
   "C8": 0
 };
 
+export const overlappingNote = (newNote, noteIdx, notes) => {
+  for (let idx=0; idx<notes.length; idx++) {
+    let otherNote = notes[idx];
+    if (otherNote.freq === newNote.freq &&
+        idx !== noteIdx &&
+        ((otherNote.ending_quarter_beat > newNote.starting_quarter_beat &&
+          otherNote.ending_quarter_beat < newNote.ending_quarter_beat) ||
+         (otherNote.starting_quarter_beat < newNote.ending_quarter_beat &&
+          otherNote.starting_quarter_beat > newNote.starting_quarter_beat) ||
+         (otherNote.starting_quarter_beat <= newNote.ending_quarter_beat &&
+          otherNote.ending_quarter_beat >= newNote.ending_quarter_beat))) {
+      return true;
+    }
+  }
+
+  return false;
+}
+

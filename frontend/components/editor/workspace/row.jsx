@@ -17,12 +17,14 @@ class Row extends React.Component {
     this.setState({
       highlight: true
     });
+    document.body.style.cursor = "crosshair";
   }
 
   handleMouseLeave() {
     this.setState({
       highlight: false
     });
+    document.body.style.cursor = "default";
   }
 
   render() {

@@ -5,8 +5,12 @@ import Timeline from "./timeline";
 import Sidebar from "./sidebar";
 import { Rect, Line } from "react-konva";
 import { FREQ_TO_NOTE_NAME, 
-         NOTE_NAME_TO_ROW_IDX } from "../../../utils/editor_utils";
+         NOTE_NAME_TO_ROW_IDX,
+         NOTE_NAME_TO_FREQ, 
+         ROW_IDX_TO_NOTE_NAME,
+         overlappingNote } from "../../../utils/editor_utils";
 import NoteBlock from "./note_block"
+import _ from "lodash";
 
 class Workspace extends React.Component {
   constructor(props) {
@@ -14,21 +18,38 @@ class Workspace extends React.Component {
 
     this.setConstants();
 
-    this.state = {
-      mousePos: {
-        x: 0,
-        y: 0
-      }
-    };
-
     this.handleRowClick = this.handleRowClick.bind(this);
     this.handleScroll = this.handleScroll.bind(this);
+    this.handleNoteBlockClick = this.handleNoteBlockClick.bind(this);
   }
   
   handleRowClick(id) {
     return (e) => {
-      console.log(`Row ${id} clicked at ` + e.evt.layerX);
-      this.setState({mousePos: {x: e.evt.layerX, y: e.evt.layerY}});
+      if (e.evt.which === 1) {
+        let qbeat = Math.floor(e.evt.layerX / this.qbeatWidth);
+        let noteName = ROW_IDX_TO_NOTE_NAME[id];
+        let freq = NOTE_NAME_TO_FREQ[noteName];
+        let newNote = {
+          freq: freq,
+          waveform: "sine",
+          starting_quarter_beat: qbeat,
+          ending_quarter_beat: qbeat+1,
+          start_volume: 1,
+          end_volume: 1
+        }
+
+        let track = this.props.track;
+        let notes = [];
+        if (track.channels_attributes.length > 0) {
+          let channel = track.channels_attributes[this.props.selectedChannel];
+          notes = _.merge([], channel.notes_attributes);
+        }
+
+        notes.push(newNote);
+        if (!overlappingNote(newNote, notes.length-1, notes)) {
+          this.props.addNoteToTrack(newNote);
+        }
+      }
     }
   }
 
@@ -50,9 +71,13 @@ class Workspace extends React.Component {
     }
   }
 
-  handleNoteBlockClick(idx) {
+  updateNoteInTrack(idx) {
     // Update Note in Track passing in idx
     return this.props.updateNoteInTrack(idx);
+  }
+
+  handleNoteBlockClick(idx) {
+    return this.props.handleNoteBlockClick(idx);
   }
 
   render() {
@@ -62,12 +87,18 @@ class Workspace extends React.Component {
     if (track.channels_attributes.length > 0) {
       let channel = track.channels_attributes[this.props.selectedChannel];
       let notes = channel.notes_attributes;
-      notes.forEach((note, idx) => {
+      for (let idx=0; idx<notes.length; idx++) {
+        let note = notes[idx];
+        
+        if (note._destroy) {
+          continue;
+        }
+
         let note_name = FREQ_TO_NOTE_NAME[note.freq];
         let rowIdx = NOTE_NAME_TO_ROW_IDX[note_name];
         let noteDuration = note.ending_quarter_beat - note.starting_quarter_beat;
         let width = noteDuration * this.qbeatWidth;
-          
+
         noteBlocks.push(
           <NoteBlock 
             key={idx}
@@ -80,10 +111,11 @@ class Workspace extends React.Component {
             qbeatWidth={this.qbeatWidth}
             rowHeight={this.rowHeight}
             offsetY={1}
-            updateNoteInTrack={this.handleNoteBlockClick(idx)}
+            updateNoteInTrack={this.updateNoteInTrack(idx)}
+            handleNoteBlockClick={this.handleNoteBlockClick(idx)}
           /> 
         )
-      });
+      }
     }
 
     return (

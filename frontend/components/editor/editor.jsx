@@ -8,32 +8,148 @@ class Editor extends React.Component {
     this.state = {
       selectedChannel: 0
     }
+
+    this.selectChannel = this.selectChannel.bind(this);
+    this.saveTrack = this.saveTrack.bind(this);
+    this.playTrack = this.playTrack.bind(this);
+    this.addChannel = this.addChannel.bind(this);
+    this.updateTrackTitle = this.updateTrackTitle.bind(this);
   }
 
   componentWillMount() {
     if (this.props.params.trackId) {
       this.props.requestTrack(this.props.params.trackId);
     }
+
+    this.ctxMenu = window.oncontextmenu;
+    window.oncontextmenu = () => (false);
   }
 
-  handleNoteBlockClick(channel_idx) {
+  componentWillUnmount() {
+    window.oncontextmenu = this.ctxMenu;
+  }
+
+  updateNoteInTrack(channel_idx) {
     return (note_idx) => (note) => {
       this.props.updateNoteInTrack(channel_idx, note_idx, note);
     }
   }
 
+  handleNoteBlockClick(channel_idx) {
+    return (note_idx) => (e) => {
+      if (e.evt.which === 3) {
+        this.props.removeNoteFromTrack(channel_idx, note_idx);
+      }
+    }
+  }
+
+  addNoteToTrack(channel_idx) {
+    return (note) => {
+      this.props.addNoteToTrack(channel_idx, note);
+    }
+  }
+
+  selectChannel(idx) {
+    return (e) => {
+      e.preventDefault();
+      this.setState({selectedChannel: idx});
+    } 
+  }
+
+  saveTrack(e) {
+    e.preventDefault();
+    if (this.props.router.location.pathname === "/edit") {
+      this.props.createTrack(this.props.track);
+    }
+    else {
+      this.props.updateTrack(this.props.track);
+    }
+  }
+
+  playTrack(e) {
+    e.preventDefault();
+    console.log(this.props.track);
+    this.props.playTrack();
+  }
+
+  addChannel(e) {
+    e.preventDefault();
+    this.props.addChannelToTrack({notes_attributes: []});
+  }
+
+  updateTrackTitle(e) {
+    console.log(e.nativeEvent);
+    this.props.updateTrackTitle(e.nativeEvent.target.value);
+  }
+
   render() {
+    let track = this.props.track;
+    let channelData = track.channels_attributes;
+    let channels = [];
+    channelData.forEach((channel, idx) => {
+      channels.push(
+        <a href="#" 
+           key={idx}
+           role="button"
+           className="editor-channel-button"
+           onClick={this.selectChannel(idx)}>
+          {"Channel " + (idx + 1)}
+        </a>
+      ) 
+    });
+    channels.push(
+      <a href="#"
+        key={"new channel"}
+        role="button"
+        className="editor-channel-button"
+        onClick={this.addChannel}>
+        +
+      </a>
+    )
+
     return (
       <div className="editor-container">
         <div className="editor-workspace-row">
+          <div className="editor-left-sidebar">
+            <input className="editor-title-input"
+                   value={this.props.track.title}
+                   onChange={this.updateTrackTitle} />
+            <div className="editor-channel-button-container">
+              {channels} 
+            </div>
+            <div className="editor-note-track-info">
+              <div className="editor-track-buttons">
+                <a href="#"
+                   role="button"
+                   className="editor-track-button"
+                   onClick={this.saveTrack}>
+                   {"Save track"}
+                </a>
+                <a href="#"
+                   role="button"
+                   className="editor-track-button"
+                   onClick={this.playTrack}>
+                   {"Play track"}
+                </a>
+              </div>
+            </div>
+          </div>
           <Workspace
             track={this.props.track}
-            selectedChannel={0}
+            selectedChannel={this.state.selectedChannel}
             updateNoteInTrack={
-              this.handleNoteBlockClick(
+              this.updateNoteInTrack(
                 this.state.selectedChannel
             )}
-          /> 
+            handleNoteBlockClick={
+              this.handleNoteBlockClick(
+                this.state.selectedChannel 
+            )}
+            addNoteToTrack={
+              this.addNoteToTrack(
+                this.state.selectedChannel
+            )}
+          />
         </div>
       </div>
     );

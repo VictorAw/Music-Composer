@@ -1,6 +1,9 @@
 class Api::TracksController < ApplicationController
   def create
     @track = Track.new(track_create_params)
+    @track.start_time = 0
+    @track.end_time = 0
+    @track.composer_id = current_user.id
     if @track.save
       new_times = {start_time: 0, end_time: @track.find_end_time}
       if @track.update(new_times)

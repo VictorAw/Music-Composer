@@ -1,7 +1,9 @@
 import React from "react";
 import { Layer, Rect, Group } from "react-konva";
 import { NOTE_NAME_TO_FREQ,
-         ROW_IDX_TO_NOTE_NAME } from "../../../utils/editor_utils";
+         ROW_IDX_TO_NOTE_NAME,
+         overlappingNote } from "../../../utils/editor_utils";
+import _ from "lodash";
 
 class NoteBlock extends React.Component {
   constructor(props) {
@@ -24,28 +26,38 @@ class NoteBlock extends React.Component {
       document.body.style.cursor = type;
     }
   }
-
+  
   dragStart(evt) {
-    
   }
 
   dragEnd(evt) {
-    // Validation checks
-    // Snap to nearest quarter_beat
-    // If there is already a note there, resize the block
-    //  so that the end of the block matches the start of the
-    //  previous block
-    // Snap to nearest row
-    // Alter the note information to match the new position/size
-    let qbeat = Math.floor(evt.target.getAbsolutePosition().x / this.props.qbeatWidth);
-    let rowIdx = Math.floor((evt.target.getAbsolutePosition().y + (this.props.rowHeight / 2)) / this.props.rowHeight);
-    let thisNote = this.props.notes[this.props.idx];
+    if (evt.target === this.refs.this) {
+      // If there is already a note there, resize the block
+      //  so that the end of the block matches the start of the
+      //  previous block
+      // Snap to nearest row
+      // Alter the note information to match the new position/size
+      let note = this.props.notes[this.props.idx];
+      let tempNote = _.merge({}, note);
 
-    thisNote.starting_qbeat = qbeat;
-    let noteName = ROW_IDX_TO_NOTE_NAME[rowIdx];
-    thisNote.freq = NOTE_NAME_TO_FREQ[noteName];
-    
-    this.props.updateNoteInTrack(thisNote);  
+      let qbeat = Math.floor(evt.target.getAbsolutePosition().x / this.props.qbeatWidth);
+      let deltaQbeat = qbeat - tempNote.starting_quarter_beat;
+
+      let rowIdx = Math.floor((evt.target.getAbsolutePosition().y + (this.props.rowHeight / 2)) / this.props.rowHeight);
+      let noteName = ROW_IDX_TO_NOTE_NAME[rowIdx];
+      tempNote.freq = NOTE_NAME_TO_FREQ[noteName];
+
+      tempNote.starting_quarter_beat = qbeat;
+      tempNote.ending_quarter_beat += deltaQbeat;
+
+      if (overlappingNote(tempNote, this.props.idx, this.props.notes)) {
+        this.props.updateNoteInTrack(note); 
+      }
+      else {
+
+        this.props.updateNoteInTrack(tempNote); 
+      }
+    } 
   }
 
   expandLeftStart(evt) {
@@ -64,21 +76,18 @@ class NoteBlock extends React.Component {
   expandLeftEnd(evt) {
     // Get the block's quarter beat from its position
     // Alter the note's quarter beat
-    let qbeat = Math.floor(evt.target.layerX / this.props.qbeatWidth);
-    let thisNote = this.props.notes[this.props.idx];
-    console.log(this.props.notes);
-    console.log(this.props.idx);
-    let freq = thisNote.freq;
-    thisNote.starting_quarter_beat = qbeat;
-    this.props.notes.forEach((note, idx) => {
-      if (note.freq === freq && 
-          idx !== this.props.idx &&
-          note.ending_quarter_beat > qbeat) {
-        thisNote.starting_quarter_beat = note.ending_quarter_beat;
-      }
-    });
+    let start_qbeat = Math.floor(evt.target.getAbsolutePosition().x / this.props.qbeatWidth);
+    let note = this.props.notes[this.props.idx];
+    let tempNote = _.merge({}, note);
+    tempNote.starting_quarter_beat = start_qbeat;
+    
+    if (overlappingNote(tempNote, this.props.idx, this.props.notes)) {
+      this.props.updateNoteInTrack(note);
+    }
+    else {
+      this.props.updateNoteInTrack(tempNote);
+    }
 
-    this.props.updateNoteInTrack(thisNote);
   }
 
   expandRightStart(evt) {
@@ -92,8 +101,19 @@ class NoteBlock extends React.Component {
   }
 
   expandRightEnd(evt) {
-    // Get the block's next quarter beat from its position
-    // ALter the note's quarter beat
+    // Get the block's quarter beat from its position
+    // Alter the note's quarter beat
+    let end_qbeat = Math.ceil((evt.target.getAbsolutePosition().x + evt.target.getWidth()) / this.props.qbeatWidth);
+    let note = this.props.notes[this.props.idx];
+    let tempNote = _.merge({}, note);
+    tempNote.ending_quarter_beat = end_qbeat;
+    
+    if (overlappingNote(tempNote, this.props.idx, this.props.notes)) {
+      this.props.updateNoteInTrack(note);
+    }
+    else {
+      this.props.updateNoteInTrack(tempNote);
+    }
   }
 
   componentDidMount() {
@@ -123,7 +143,6 @@ class NoteBlock extends React.Component {
         draggable="true"
         x={this.props.x}
         y={this.props.y + 1}
-        draggable="true"
         onClick={this.props.handleNoteBlockClick}
         onDragStart={this.dragStart}
         onDragEnd={this.dragEnd}
@@ -134,7 +153,7 @@ class NoteBlock extends React.Component {
           y={0}
           width={this.props.width}
           height={this.props.height}
-          fill="blue"
+          fill="black"
           onMouseEnter={this.setCursor("move")}
           onMouseLeave={this.setCursor("default")}
         />

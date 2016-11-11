@@ -61,7 +61,8 @@ export class Track {
     this.playing = false;
     this.bpm = trackData.bpm;
 
-    let cstart = new Date();
+    // Timing test
+    // let cstart = new Date();
 
     // Setup noteData 
     this.noteData = [];
@@ -83,9 +84,9 @@ export class Track {
       }
     });
 
-    let cend = new Date();
-
-    console.log(`NoteData took ${cend.getTime() - cstart.getTime()} msec`);
+    // Timing test
+    // let cend = new Date();
+    // console.log(`NoteData took ${cend.getTime() - cstart.getTime()} msec`);
 
     this.bindEventHandlers();
 
@@ -109,7 +110,8 @@ export class Track {
     let notesRemaining = dataLength - playLength;
     // Generate notes if there are any left to genereate
     if (notesRemaining > 0) {
-      let pgstart = new Date();
+      // Timing test
+      // let pgstart = new Date();
      
       // If there are more than 10k notes to generate, only generate 10k
       let notesToGen = notesRemaining > 10000 ? 10000 : notesRemaining;
@@ -127,9 +129,10 @@ export class Track {
               )
         );
       }
-      
-      let pgend = new Date();
-      console.log(`PlayQueue generation cycle took ${pgend.getTime() - pgstart.getTime()} ms`);
+     
+      // Timing test 
+      // let pgend = new Date();
+      // console.log(`PlayQueue generation cycle took ${pgend.getTime() - pgstart.getTime()} ms`);
 
       return true;
     }

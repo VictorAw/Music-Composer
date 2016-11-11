@@ -8,6 +8,9 @@ export const PLAYING_TRACK = "PLAYING_TRACK";
 export const ADD_NOTE_TO_TRACK = "ADD_NOTE_TO_TRACK";
 export const UPDATE_NOTE_IN_TRACK = "UPDATE_NOTE_IN_TRACK";
 export const REMOVE_NOTE_FROM_TRACK = "REMOVE_NOTE_FROM_TRACK";
+export const ADD_CHANNEL_TO_TRACK = "ADD_CHANNEL_TO_TRACK";
+export const REMOVE_CHANNEL_FROM_TRACK = "REMOVE_CHANNEL_FROM_TRACK";
+export const UPDATE_TITLE = "UPDATE_TITLE";
 
 export const createTrack = (track) => ({
   type: CREATE_TRACK,
@@ -62,3 +65,17 @@ export const removeNoteFromTrack = (channel_idx, note_idx) => ({
   note_idx
 });
 
+export const addChannelToTrack = (channel) => ({
+  type: ADD_CHANNEL_TO_TRACK,
+  channel
+}); 
+
+export const removeChannelFromTrack = (channel_idx) => ({
+  type: REMOVE_CHANNEL_FROM_TRACK,
+  channel_idx
+});
+
+export const updateTitle = (title) => ({
+  type: UPDATE_TITLE,
+  title
+});
