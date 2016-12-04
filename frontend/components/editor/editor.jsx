@@ -68,8 +68,12 @@ class Editor extends React.Component {
 
   playTrack(e) {
     e.preventDefault();
-    console.log(this.props.track);
     this.props.playTrack();
+  }
+
+  stopTrack(e) {
+    e.preventDefault();
+    this.props.stopTrack();
   }
 
   addChannel(e) {
@@ -78,11 +82,12 @@ class Editor extends React.Component {
   }
 
   updateTrackTitle(e) {
-    console.log(e.nativeEvent);
     this.props.updateTrackTitle(e.nativeEvent.target.value);
   }
 
   render() {
+    //console.log(this.props);
+    //console.log("Track info", this.props.track.playing, this.props.player.track);
     let track = this.props.track;
     let channelData = track.channels_attributes;
     let channels = [];

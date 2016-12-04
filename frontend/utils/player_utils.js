@@ -26,11 +26,11 @@ export class Note {
     // Start and end time relative to the currentTime of the context
     // Start, end, duration, and currentTime are in seconds
     let currTime = ctx.currentTime;
-    let start = qbeatToS(start_qbeat, bpm);
+    let start = currTime + qbeatToS(start_qbeat, bpm);
     let end = 0;
     let duration = 0;
     if (end_qbeat) {
-      end = qbeatToS(end_qbeat, bpm) - 0.05; // Slight separation of notes
+      end = currTime + qbeatToS(end_qbeat, bpm) - 0.1; // Slight separation of notes
       duration = end - start;
     }
 
@@ -42,6 +42,11 @@ export class Note {
     if (end_qbeat) {
       this.oscillator.stop(end);
       this.volume.gain.setValueCurveAtTime(vols, start, duration);
+      this.volume.gain.setValueCurveAtTime(
+          new Float32Array([vols[1], 0]), 
+          end, 
+          0.05
+      );
     }
   }
 
@@ -50,8 +55,9 @@ export class Note {
     vols[0] = this.volume.gain.value;
     vols[1] = 0;
 
-    this.volume.gain.setValueCurveAtTime(vols, this.ctx.currentTime, 0.1);
-    this.oscillator.stop(this.ctx.currentTime + 0.1);
+    this.volume.gain.cancelScheduledValues(0);
+    this.volume.gain.setValueCurveAtTime(vols, this.ctx.currentTime, 0.05);
+    this.oscillator.stop(this.ctx.currentTime + 0.05);
   }
 }
 
@@ -102,6 +108,7 @@ export class Track {
   finish() {
     this.context.close();
     this.playQueue = [];
+    this.playing = false
   }
 
   generateNotes() {
@@ -119,14 +126,14 @@ export class Track {
         let noteDatum = this.noteData[i];
         // Context, Freq, Volume, Time(start, end, bpm)
         this.playQueue.push(
-            new Note(this.context,
-              noteDatum.freq,
-              noteDatum.start_volume,
-              noteDatum.end_volume,
-              this.bpm,
-              noteDatum.starting_quarter_beat,
-              noteDatum.ending_quarter_beat
-              )
+          new Note(this.context,
+            noteDatum.freq,
+            noteDatum.start_volume,
+            noteDatum.end_volume,
+            this.bpm,
+            noteDatum.starting_quarter_beat,
+            noteDatum.ending_quarter_beat
+          )
         );
       }
      
@@ -137,44 +144,47 @@ export class Track {
       return true;
     }
     else {
-      console.log("PlayQueue generation finished");
-
       return false;
     }
   }
 
   reset() {
-    let rstart = new Date();
+    // Timing test
+    // let rstart = new Date();
 
+    // Clean up old track state
+    this.stop();
+    
+    // Create new track state
     this.context = new AudioContext();
-    this.pause();
-    console.log(this.context);
-
     // Start creating playback notes
     this.playQueue = [];
     // Generate new notes every second
     this.generateNotes(); // Generate the first round of notes immediately
     this.playQueueGen = setInterval(() => {
       if (!this.generateNotes()) {
-        this.playQueue[this.playQueue.length-1].onended = this.finish;
+        if (this.playQueue.length > 0) {
+          this.playQueue[this.playQueue.length-1].onended = this.finish;
+        }
         clearInterval(this.playQueueGen);
       }
     }, 1000);
 
-    let rend = new Date();
+    // Timing test
+    // let rend = new Date();
+    // console.log(`Reset took ${rend.getTime() - rstart.getTime()} msec`);
 
-    console.log(`Reset took ${rend.getTime() - rstart.getTime()} msec`);
-
-    this.continuePlay();
+    this.playing = true;
   }
 
   continuePlay() {
+    this.playing = true;
     this.context.resume();
   }
 
   stop() {
     if (this.playing) {
-      this.playing = false;
+      console.log("Stop track");
       // Stop generating new notes
       clearInterval(this.playQueueGen); 
 

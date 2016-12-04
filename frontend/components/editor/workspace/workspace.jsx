@@ -22,7 +22,15 @@ class Workspace extends React.Component {
     this.handleScroll = this.handleScroll.bind(this);
     this.handleNoteBlockClick = this.handleNoteBlockClick.bind(this);
   }
-  
+
+  componentDidMount() {
+    console.log("Did mount");
+    console.log(this.refs);
+    let octaves = 12;
+    this.refs.notes_canvas.scrollTop = 2.2 * octaves * this.rowHeight;
+    this.refs.sidebar.scrollTop = 2.2 * octaves * this.rowHeight;
+  }
+
   handleRowClick(id) {
     return (e) => {
       if (e.evt.which === 1) {
@@ -168,7 +176,7 @@ class Workspace extends React.Component {
               />
             </div>
             
-            <div className="workspace-notes-canvas">
+            <div className="workspace-notes-canvas" ref="notes_canvas">
               <Stage width={this.canvasWidth} height={this.canvasHeight}>
                 <Layer>
                   {this.rows}

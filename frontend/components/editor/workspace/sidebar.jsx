@@ -111,8 +111,6 @@ class Sidebar extends React.Component {
               onMouseLeave={this.handleMouseLeave(rowId)}/>
       )
     }
-
-
   }
 
   render() {

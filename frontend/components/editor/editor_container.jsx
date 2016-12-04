@@ -22,6 +22,7 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
   return {
     playTrack: () => dispatch(playTrack()),
+    stopTrack: () => dispatch(stopTrack()),
     createTrack: (track) => dispatch(createTrack(track)),
     requestTrack: (id) => dispatch(requestTrack(id)),
     updateTrack: (track) => dispatch(updateTrack),
