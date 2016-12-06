@@ -1,20 +1,26 @@
 .track-list {
-  background-color: lightblue;
+  background-color: gray;
   display: flex;
   flex-direction: column;
   align-items: center;
   margin: 3%;
   width: 100%;
+  height: fit-content;
 }
 
 .track-info-container {
-  background-color: salmon;
+  background-color: darkgray;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  margin: 5% 10% 0% 10%;
+  margin: 0% 10% 2% 10%;
   padding: 2%;
-  width: 80%;
+  width: 90%;
+  height: 100%;
+}
+
+.track-info-container:first-of-type {
+  margin-top: 2%;
 }
 
 .track-info {
@@ -25,6 +31,7 @@
 
 .track-info-title {
   margin: 5px;
+  margin-top: 15%;
 }
 
 .track-info-length {
@@ -32,13 +39,13 @@
 }
 
 .track-buttons {
-  background-color: lightgreen;
+  border: 1px solid black;
   display: flex;
   flex-direction: column;
+  height: 100%;
 }
 
 .track-buttons-controls {
-  background-color: lightblue;
   display:flex;
   justify-content: space-between;
 }
@@ -46,10 +53,28 @@
 .track-buttons img {
   max-width: 45px;
   max-height: 45px;
-  margin: 5px 5px 5px 5px;
 }
 
 .track-buttons-edit {
   display: flex;
   justify-content: center;
+  background-color: red;
+  border-top: 1px solid black;
+}
+
+.track-buttons-edit:hover {
+  background-color: #f44242;
+}
+
+.track-buttons-edit:active {
+  background-color: #f91818;
+}
+
+.track-buttons-edit:hover a {
+  color: black;
+}
+
+.track-buttons-edit a {
+  text-decoration: none;
+  color: white;
 }

@@ -17,10 +17,10 @@
 }
 
 .navbar a:hover {
-  border: 1px solid black;
+  background-color: #f44242;
 }
 
 .navbar a:active {
   border: 1px solid black;
-  background-color: #dd5347/*#ff0000*/;
+  background-color: #f91818;
 }

@@ -11,7 +11,7 @@
   width: 20%;
   min-width: 200px;
 
-  background-color: lightblue;
+  background-color: gray;
 }
 
 .profile-picture {
@@ -22,6 +22,8 @@
 }
 
 .profile-description-container {
-  background-color: salmon;
-  margin: 10% 5%;
+  background-color: darkgray;
+  padding: 5%;
+  padding-left: 6%;
+  margin: 10% 0%;
 }

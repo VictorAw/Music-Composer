@@ -10,6 +10,16 @@ class Profile extends React.Component {
     this.props.requestUser(this.props.params.userId);
   }
 
+  descriptionArea() {
+    if (this.props.selectedUser.id === this.props.currentUser.id) {
+      return (
+        <form onSubmit={this.formSubmit}>
+          <Textarea>this.props.selectedUser.description</TextArea>
+        </form>
+      )
+    }
+  }
+
   render() {
     return (
       <section id="profile-container" className="profile-container">
@@ -20,7 +30,7 @@ class Profile extends React.Component {
           </p>
           <div id="profile-description-container" 
                className="profile-description-container">
-             <p>{"Description placeholder. There will be lots of text here in the future, most likely. At least for people who have a lot ot say about themselves."}</p>
+            { this.descriptionArea() }
           </div>
         </div>
         <div id="track-list" className="track-list">
