@@ -6,7 +6,7 @@ import { requestUser } from "../../actions/user_actions";
 function mapStateToProps(state) {
   return {
     selectedUser: state.users.selectedUser,
-    currentUser: state.sessions.currentUser
+    currentUser: state.session.currentUser
   };
 }
 

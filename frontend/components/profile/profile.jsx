@@ -13,9 +13,26 @@ class Profile extends React.Component {
   descriptionArea() {
     if (this.props.selectedUser.id === this.props.currentUser.id) {
       return (
-        <form onSubmit={this.formSubmit}>
-          <Textarea>this.props.selectedUser.description</TextArea>
+        <form 
+          className="profile-description-form"
+          onSubmit={this.formSubmit}>
+          <textarea 
+            className="profile-description-textarea"
+            defaultValue={this.props.selectedUser.description}>
+          </textarea>
+          <button 
+            className="profile-description-update-button">
+            Update Description
+          </button>
         </form>
+      )
+    }
+    else {
+      return (
+        <p
+          className="profile-description">
+          { this.props.selectedUser.description }
+        </p> 
       )
     }
   }

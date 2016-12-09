@@ -26,4 +26,30 @@
   padding: 5%;
   padding-left: 6%;
   margin: 10% 0%;
+  display: flex;
+  height: 25%;
 }
+
+.profile-description-form {
+  height: 100%;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.profile-description-textarea {
+  resize: none;
+  height: 80%; 
+  padding: 10px;
+}
+
+.profile-description {
+  height: 80%;
+  padding: 10px;
+}
+
+.profile-description-update-button {
+  margin-top: 5px;
+}
+
