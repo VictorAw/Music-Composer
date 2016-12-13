@@ -1,29 +1,34 @@
 import React from "react";
 
-const leaveModal = (router) => (e) => {
-  console.log("Leave modal");
-  if (e.target.id === "modal" ||
-      e.target.id === "modal-content-container" ||
-      e.target.id === "modal-close-button") {
-    router.push("/");
-  }
-}
+const Modal = (props) => {
+  const closeModal = function() {
+    props.closeModal();
+  };
 
-const Modal = ({children, router}) => {  
+  let modalState = "";
+  if (props.showModal == "hidden") {
+    modalState = " modal-hidden";
+  }
+
   return (
-    <section id="modal" 
-             className="modal" 
-             onClick={leaveModal(router)}>
-      <div id="modal-content-container"
-           className="modal-content-container">
-        <section className="modal-content">
-          { children }
-          <p id="modal-close-button"
-             className="modal-close-button" 
-             onClick={leaveModal(router)}>x</p>
+    <section 
+      id="modal"
+      className={"modal" + modalState}
+      onClick={ closeModal }>
+      <div 
+        id="modal-content-container"
+        className="modal-content-container">
+        <section
+          id="modal-content"
+          className="modal-content">
+          { props.children }
+          <p 
+            id="modal-close-button"
+            className="modal-close-button"
+            onClick={ closeModal }>x</p>
         </section>
-       </div>
-    </section> 
+      </div>
+    </section>
   );
 }
 

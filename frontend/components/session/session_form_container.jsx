@@ -14,13 +14,10 @@ function mapStateToProps({session}) {
 }
 
 function mapDispatchToProps(dispatch, {location}) {
-  const formType = location.pathname.slice(1);
-
   return {
     signup: user => dispatch(signup(user)),
     login: user => dispatch(login(user)),
-    clearErrors: () => dispatch(clearErrors()),
-    formType
+    clearErrors: () => dispatch(clearErrors())
   };
 }
 

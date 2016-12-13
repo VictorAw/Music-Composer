@@ -3,7 +3,7 @@ import _ from "lodash";
 
 const defaultState = {
   track: null
-}
+};
 
 const PlayerReducer = (oldState=defaultState, action) => {
   Object.freeze(oldState);

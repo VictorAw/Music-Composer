@@ -29,14 +29,6 @@ const Root = ({store}) => {
         <Route path="/" component={MainLayout}>
           <IndexRoute component={Home}/>
 
-          <Route path="/login" component={Modal} onEnter={_redirectIfLoggedIn}>
-            <IndexRoute component={SessionFormContainer} />
-           </Route>
-          
-           <Route path="/signup" component={Modal} onEnter={_redirectIfLoggedIn}>
-            <IndexRoute component={SessionFormContainer} />
-          </Route>
-
           <Route path="/users/:userId/profile" component={ProfileContainer} onEnter={_ensureLoggedIn}>
           </Route>
 
