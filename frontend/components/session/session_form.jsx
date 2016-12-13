@@ -26,7 +26,7 @@ class SessionForm extends React.Component {
   }
 
   redirectIfLoggedIn() {
-    if (this.props.loggedIn) {
+    if (this.props.currentUser) {
       this.props.router.push("/");
     }
   }
@@ -36,7 +36,7 @@ class SessionForm extends React.Component {
       return (
         <div className="session-redirect-link">
           <p>{"Don't have an account?"}</p>
-          <Link to="/signup">Sign up!</Link>
+          <Link to="">Sign up!</Link>
         </div>
       );
     }
@@ -44,7 +44,7 @@ class SessionForm extends React.Component {
       return (
         <div className="session-redirect-link">
           <p>{"Already have an account?"}</p>
-          <Link to="/login">Log in!</Link>
+          <Link to="">Log in!</Link>
         </div> 
       );
     }
@@ -70,7 +70,7 @@ class SessionForm extends React.Component {
     return (
       <div className="session-redirect-link">
         <p>{"Want to take a tour?"}</p>
-        <Link to="#" onClick={this.handleGuestLogin}>Guest login!</Link>
+        <Link to="" onClick={this.handleGuestLogin}>Guest login!</Link>
       </div>
     )
   }
@@ -87,7 +87,8 @@ class SessionForm extends React.Component {
 
   handleGuestLogin(e) {
     e.preventDefault();
-    this.props.login({user: {username: "Guest", password: "tour_account"}});
+    this.props.login({user: {username: "Guest", password: "tour_account"}}).
+      then(this.props.router.push(`/users/${this.props.currentUser.id}/profile`));
   }
 
   update(field) {

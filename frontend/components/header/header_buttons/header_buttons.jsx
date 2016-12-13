@@ -75,7 +75,7 @@ class HeaderButtons extends React.Component {
 
     return (
       <div className="header-buttons-container">
-        { this.props.currentUser ? this.signedIn(this.props.currentUser, logout) : this.signedOut() }
+        { this.props.currentUser ? this.signedIn() : this.signedOut() }
         <Modal
           showModal={this.state.showModal}
           closeModal={this.hideModal}>
