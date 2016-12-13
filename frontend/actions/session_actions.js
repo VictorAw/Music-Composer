@@ -5,7 +5,7 @@ export const LOGIN = "LOGIN";
 export const LOGOUT = "LOGOUT";
 export const SIGNUP = "SIGNUP";
 
-export const receiveCurrentUser = (currentUser) => ({
+export const receiveCurrentUser = (currentUser, success=null) => ({
   type: RECEIVE_CURRENT_USER,
   currentUser
 });

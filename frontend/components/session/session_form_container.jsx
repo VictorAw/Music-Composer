@@ -14,9 +14,12 @@ function mapStateToProps({session}) {
 }
 
 function mapDispatchToProps(dispatch, {location}) {
+  let success = () => {
+
+  }
   return {
-    signup: user => dispatch(signup(user)),
-    login: user => dispatch(login(user)),
+    signup: (user) => dispatch(signup(user)),
+    login: (user) => dispatch(login(user)),
     clearErrors: () => dispatch(clearErrors())
   };
 }

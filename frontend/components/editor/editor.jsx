@@ -26,6 +26,7 @@ class Editor extends React.Component {
   }
 
   componentWillUnmount() {
+    this.props.stopTrack();
     window.oncontextmenu = this.ctxMenu;
   }
 

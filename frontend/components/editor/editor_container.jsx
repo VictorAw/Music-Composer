@@ -1,6 +1,7 @@
 import { connect } from "react-redux";
 import Editor from "./editor";
 import { playTrack,
+         stopTrack,
          requestTrack,
          createTrack,
          updateTrack,

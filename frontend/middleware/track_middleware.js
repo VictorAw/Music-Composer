@@ -56,9 +56,10 @@ const TrackMiddleware = ({ getState, dispatch }) => next => action => {
     case STOP_TRACK: {
       let state = getState();
       let track = state.player.track;
-      dispatch(playingTrack(track));
-      track.stop();
-      dispatch(playingTrack(null));
+      if (track) {
+        track.stop();
+        dispatch(playingTrack(null));
+      }
       break;
     }
     default: {

@@ -1,5 +1,5 @@
 import React from "react";
-import { Link } from "react-router";
+import { Link, withRouter } from "react-router";
 
 class SessionForm extends React.Component {
   constructor(props) {
@@ -27,7 +27,8 @@ class SessionForm extends React.Component {
 
   redirectIfLoggedIn() {
     if (this.props.currentUser) {
-      this.props.router.push("/");
+      this.props.router.push(`/users/${this.props.currentUser.id}/profile`);
+      this.props.closeModal();
     }
   }
 
@@ -87,8 +88,7 @@ class SessionForm extends React.Component {
 
   handleGuestLogin(e) {
     e.preventDefault();
-    this.props.login({user: {username: "Guest", password: "tour_account"}}).
-      then(this.props.router.push(`/users/${this.props.currentUser.id}/profile`));
+    this.props.login({user: {username: "Guest", password: "tour_account"}});
   }
 
   update(field) {
@@ -106,7 +106,6 @@ class SessionForm extends React.Component {
   }
 
   render() {
-    console.log(this.props);
     let title = (this.props.formType === "login") ? "Log in" : "Sign up";
     return (
       <form onSubmit={this.handleSubmit} className="login-form" id="login-form">
@@ -147,4 +146,4 @@ class SessionForm extends React.Component {
   }
 }
 
-export default SessionForm;
+export default withRouter(SessionForm);

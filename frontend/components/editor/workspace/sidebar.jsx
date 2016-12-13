@@ -21,6 +21,10 @@ class Sidebar extends React.Component {
     }
   }
 
+  componentWillUnmount() {
+    this.ctx.close();
+  }
+
   handleMouseDown(id) {
     return (e) => {
       console.log("Sidebar Row " + id + " mouse down");

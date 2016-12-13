@@ -2,7 +2,7 @@ import { PLAYING_TRACK } from "../actions/player_actions";
 import _ from "lodash";
 
 const defaultState = {
-  track: null
+  track: null,
 };
 
 const PlayerReducer = (oldState=defaultState, action) => {

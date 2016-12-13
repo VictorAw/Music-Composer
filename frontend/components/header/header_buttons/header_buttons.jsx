@@ -57,13 +57,15 @@ class HeaderButtons extends React.Component {
     if (this.state.showModal == "login") {
       return (
         <SessionFormContainer 
-          formType="login"/> 
+          formType="login"
+          closeModal={this.hideModal}/> 
       );
     }
     else if (this.state.showModal == "signup") {
       return (
         <SessionFormContainer 
-          formType="signup"/> 
+          formType="signup"
+          closeModal={this.hideModal}/> 
       );
     }
     else {
@@ -72,7 +74,6 @@ class HeaderButtons extends React.Component {
   }
 
   render() {
-
     return (
       <div className="header-buttons-container">
         { this.props.currentUser ? this.signedIn() : this.signedOut() }

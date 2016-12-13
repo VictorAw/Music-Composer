@@ -184,7 +184,6 @@ export class Track {
 
   stop() {
     if (this.playing) {
-      console.log("Stop track");
       // Stop generating new notes
       clearInterval(this.playQueueGen); 
 
