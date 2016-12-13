@@ -19,21 +19,23 @@ class HeaderButtons extends React.Component {
   }
 
   signedOut() {
+    let formStyling = this.props.currentUser ? "profile-logout" : "login-signup";
     return (
-      <div id="header-buttons-container">
+      <nav className={ "header-buttons " + formStyling }>
         <Link to="" onClick={this.showLogin}>Login</Link>
         <Link to="" onClick={this.showSignUp}>Sign up!</Link>
-      </div>
+      </nav>
     );
   }
 
   signedIn() {
+    let formStyling = this.props.currentUser ? "profile-logout" : "login-signup";
     return (
-      <div id="header-buttons-container">
+      <nav className={ "header-buttons " + formStyling }>
         <h2 className="header-name">Hi, </h2>
         <Link to={`/users/${this.props.currentUser.id}/profile`}>{this.props.currentUser.username}!</Link>
         <Link to="/" onClick={this.props.logout}>Log Out!</Link> 
-      </div>
+      </nav>
     );
   }
 
@@ -70,17 +72,16 @@ class HeaderButtons extends React.Component {
   }
 
   render() {
-    let formStyling = this.props.currentUser ? "profile-logout" : "login-signup";
 
     return (
-      <nav className={ "header-buttons" + formStyling }>
+      <div className="header-buttons-container">
         { this.props.currentUser ? this.signedIn(this.props.currentUser, logout) : this.signedOut() }
         <Modal
           showModal={this.state.showModal}
           closeModal={this.hideModal}>
           { this.loginForm() }
         </Modal>
-      </nav>   
+      </div>   
     );
   }
 }
