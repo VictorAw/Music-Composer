@@ -105,6 +105,7 @@ class SessionForm extends React.Component {
   }
 
   render() {
+    console.log(this.props);
     let title = (this.props.formType === "login") ? "Log in" : "Sign up";
     return (
       <form onSubmit={this.handleSubmit} className="login-form" id="login-form">
