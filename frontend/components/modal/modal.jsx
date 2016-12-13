@@ -1,8 +1,12 @@
 import React from "react";
 
 const Modal = (props) => {
-  const closeModal = function() {
-    props.closeModal();
+  const closeModal = function(e) {
+    if (e.target.id === "modal" ||
+        e.target.id === "modal-content-container" ||
+        e.target.id === "modal-close-button") {
+      props.closeModal();
+    }
   };
 
   let modalState = "";
