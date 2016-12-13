@@ -18,11 +18,11 @@ const TrackMiddleware = ({ getState, dispatch }) => next => action => {
 
   switch(action.type) {
     case CREATE_TRACK: {
-      createTrack(action.track, () => { console.log("Successful create") });
+      createTrack(action.track, () => { /*console.log("Successful create")*/ });
       return next(action);
     }
     case REQUEST_TRACK: {
-      fetchTrack(action.id, successCallback, (err) => console.log(err));
+      fetchTrack(action.id, successCallback, (err) => {return;/*console.log(err)*/});
       return next(action);
     }
     case UPDATE_TRACK: {
@@ -37,11 +37,11 @@ const TrackMiddleware = ({ getState, dispatch }) => next => action => {
       let state = getState();
       let track = state.player.track;
       if (!state.player.track) {
-        console.log("New track");
+        //console.log("New track");
         track = new Track(state.track);
       }
       else if (state.player.track.trackData !== state.track) {
-        console.log("Stopping old track. Creating new one");
+        //console.log("Stopping old track. Creating new one");
         track.stop();
         track = new Track(state.track);
       }

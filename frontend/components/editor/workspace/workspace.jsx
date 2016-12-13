@@ -24,8 +24,6 @@ class Workspace extends React.Component {
   }
 
   componentDidMount() {
-    console.log("Did mount");
-    console.log(this.refs);
     let octaves = 12;
     this.refs.notes_canvas.scrollTop = 2.2 * octaves * this.rowHeight;
     this.refs.sidebar.scrollTop = 2.2 * octaves * this.rowHeight;
