@@ -14,6 +14,7 @@ class Editor extends React.Component {
     this.playTrack = this.playTrack.bind(this);
     this.addChannel = this.addChannel.bind(this);
     this.updateTrackTitle = this.updateTrackTitle.bind(this);
+    this.goBack = this.goBack.bind(this);
   }
 
   componentWillMount() {
@@ -86,6 +87,12 @@ class Editor extends React.Component {
     this.props.updateTrackTitle(e.nativeEvent.target.value);
   }
 
+  goBack(e) {
+    e.preventDefault();
+    console.log(this.props);
+    this.props.router.goBack();
+  }
+
   render() {
     //console.log(this.props);
     //console.log("Track info", this.props.track.playing, this.props.player.track);
@@ -115,6 +122,12 @@ class Editor extends React.Component {
 
     return (
       <div className="editor-container">
+        <a href="#"
+           role="button"
+           className="editor-back-button"
+           onClick={this.goBack}>
+           {"🡨 Back"}
+        </a>
         <div className="editor-workspace-row">
           <div className="editor-left-sidebar">
             <input className="editor-title-input"
