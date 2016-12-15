@@ -110,17 +110,36 @@ export const NOTE_NAME_TO_ROW_IDX = {
   "C8": 0
 };
 
+function overlapsLeft(newNote, otherNote) {
+  return (newNote.starting_quarter_beat < otherNote.starting_quarter_beat &&
+          newNote.ending_quarter_beat > otherNote.starting_quarter_beat);
+}
+
+function overlapsRight(newNote, otherNote) {
+  return (newNote.starting_quarter_beat < otherNote.ending_quarter_beat &&
+          newNote.ending_quarter_beat > otherNote.ending_quarter_beat);
+}
+
+function contains(newNote, otherNote) {
+  return (newNote.starting_quarter_beat < otherNote.starting_quarter_beat &&
+          newNote.ending_quarter_beat > otherNote.ending_quarter_beat);
+}
+
+function overlays(newNote, otherNote) {
+  return (newNote.starting_quarter_beat === otherNote.starting_quarter_beat &&
+          newNote.ending_quarter_beat === otherNote.ending_quarter_beat);
+}
+
 export const overlappingNote = (newNote, noteIdx, notes) => {
   for (let idx=0; idx<notes.length; idx++) {
     let otherNote = notes[idx];
     if (otherNote.freq === newNote.freq &&
         idx !== noteIdx &&
-        ((otherNote.ending_quarter_beat > newNote.starting_quarter_beat &&
-          otherNote.ending_quarter_beat < newNote.ending_quarter_beat) ||
-         (otherNote.starting_quarter_beat < newNote.ending_quarter_beat &&
-          otherNote.starting_quarter_beat > newNote.starting_quarter_beat) ||
-         (otherNote.starting_quarter_beat <= newNote.ending_quarter_beat &&
-          otherNote.ending_quarter_beat >= newNote.ending_quarter_beat))) {
+        (overlapsLeft(newNote, otherNote) ||
+         overlapsRight(newNote, otherNote) ||
+         overlays(newNote, otherNote) ||
+         contains(newNote, otherNote))
+       ) {
       return true;
     }
   }
