@@ -40,8 +40,8 @@ class Workspace extends React.Component {
           waveform: "sine",
           starting_quarter_beat: qbeat,
           ending_quarter_beat: qbeat+1,
-          start_volume: 1,
-          end_volume: 1
+          start_volume: 0.3,
+          end_volume: 0.3
         }
 
         let track = this.props.track;
@@ -72,9 +72,12 @@ class Workspace extends React.Component {
     }
 
     // Canvas
-    if (row.scrollHeight === this.refs.sidebar.scrollHeight) {
+    offset = this.rowHeight;
+    if (row.scrollHeight + offset === this.refs.sidebar.scrollHeight) {
       this.refs.sidebar.scrollTop = row.scrollTop;
     }
+    console.log(this.refs.sidebar.scrollHeight, this.refs.sidebar.scrollTop);
+    console.log(row.scrollHeight, row.scrollTop);
   }
 
   updateNoteInTrack(idx) {
@@ -104,23 +107,25 @@ class Workspace extends React.Component {
         let rowIdx = NOTE_NAME_TO_ROW_IDX[note_name];
         let noteDuration = note.ending_quarter_beat - note.starting_quarter_beat;
         let width = noteDuration * this.qbeatWidth;
+        let offset = note.starting_quarter_beat % 4 === 0 ? 4 : 2;
 
         noteBlocks.push(
           <NoteBlock 
             key={idx}
             idx={idx}
             notes={notes}
-            x={(note.starting_quarter_beat * this.qbeatWidth)}
+            x={(note.starting_quarter_beat * this.qbeatWidth) + offset}
             y={(rowIdx * this.rowHeight)}
-            width={width - 2}
+            width={width - offset - 2}
             height={this.rowHeight - 2}
             qbeatWidth={this.qbeatWidth}
             rowHeight={this.rowHeight}
             offsetY={1}
+            freq={note.freq}
             updateNoteInTrack={this.updateNoteInTrack(idx)}
             handleNoteBlockClick={this.handleNoteBlockClick(idx)}
           /> 
-        )
+        );
       }
     }
 
@@ -139,6 +144,13 @@ class Workspace extends React.Component {
                       width={this.pitchSidebarWidth}
                       height={this.timelineHeight}
                       fill="gray"/>
+                    <Line
+                      points={[
+                        0, this.timelineHeight,
+                        this.pitchSidebarWidth, this.timelineHeight
+                      ]}
+                      stroke="#000000"
+                      strokeWidth="4"/>
                     <Line
                       points={[
                         this.pitchSidebarWidth-2, 0,
@@ -207,7 +219,8 @@ class Workspace extends React.Component {
     this.timelineWidth = this.rowWidth + (this.pitchSidebarWidth * 2);
 
     this.timelineHeight = this.rowHeight;
-    this.pitchSidebarHeight = (this.pitchCount * this.rowHeight);
+    // Add one additional row for the sidebar to account for the scrollbar in the main canvas
+    this.pitchSidebarHeight = ((this.pitchCount + 1) * this.rowHeight);
 
     this.canvasWidth = this.rowWidth;
     this.canvasHeight = (this.pitchCount * this.rowHeight);

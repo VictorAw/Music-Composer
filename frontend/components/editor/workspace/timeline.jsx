@@ -73,7 +73,13 @@ class Timeline extends React.Component {
             width={this.props.width}
             height={this.props.height}
             fill="gray"
-            listening="false"/> 
+            listening="false"/>
+          <Line
+            points={[
+              0, this.props.height, this.props.width, this.props.height
+            ]}
+            stroke="#000000"
+            strokeWidth="4"/>
           {lines}
           {text}
         </Layer>

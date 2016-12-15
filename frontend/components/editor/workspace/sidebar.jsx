@@ -27,20 +27,20 @@ class Sidebar extends React.Component {
 
   handleMouseDown(id) {
     return (e) => {
-      console.log("Sidebar Row " + id + " mouse down");
+      //console.log("Sidebar Row " + id + " mouse down");
       this.mouseDown = true;
       let note_name = ROW_IDX_TO_NOTE_NAME[id];
       let freq = NOTE_NAME_TO_FREQ[note_name];
       this.note = new Note(this.ctx,
                            freq,
-                           0.3, 0.3,
+                           0.1, 0.1,
                            60, 0);
     }
   }
   
   handleMouseUp(id) {
     return (e) => {
-      console.log("Sidebar Row " + id + " mouse up");
+      //console.log("Sidebar Row " + id + " mouse up");
       this.mouseDown = false;
       this.note.stop();
       this.note = null;
@@ -74,6 +74,9 @@ class Sidebar extends React.Component {
   buildComponents() {
     this.rects = [];
     this.text = [];
+    
+    // rowHeight is used further down, outside of the loop
+    let rowHeight = this.props.rowHeight;
     for (let rowId=0; rowId<this.props.pitchCount; rowId++) {
       // Alternate colors
       let color = "gray";
@@ -87,7 +90,6 @@ class Sidebar extends React.Component {
         textColor = "black";
       }
 
-      let rowHeight = this.props.rowHeight;
       this.rects.push(
         <Rect key={rowId}
               x={0}
@@ -99,7 +101,7 @@ class Sidebar extends React.Component {
               onMouseUp={this.handleMouseUp(rowId)}
               onMouseEnter={this.handleMouseEnter(rowId)}
               onMouseLeave={this.handleMouseLeave(rowId)}/>
-      )
+      );
 
       let textY = (rowId * rowHeight) + (rowHeight / 2) - 5;
       this.text.push(
@@ -115,6 +117,20 @@ class Sidebar extends React.Component {
               onMouseLeave={this.handleMouseLeave(rowId)}/>
       )
     }
+    let color = "gray";
+    let rowId = this.rects.length;
+    if (rowId % 2 === 0) {
+      color = "lightgray";  
+    }
+    this.rects.push(
+      <Rect key={rowId}
+            x={0}
+            y={rowId * rowHeight}
+            width={this.props.width}
+            height={rowHeight}
+            fill={color}/>
+    );
+    console.log(this.rects.length);
   }
 
   render() {

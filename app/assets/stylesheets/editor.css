@@ -67,11 +67,16 @@
   text-decoration: none;
   color: white;
   background-color: #555555;
+  margin: 2px;
   padding: 5px;
   border: 1px solid white;
   white-space: nowrap;
 
   text-align: center;
+}
+
+.editor-track-button:hover {
+  background-color: #777777;
 }
 
 .editor-left-sidebar {

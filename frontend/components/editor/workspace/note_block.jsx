@@ -1,7 +1,8 @@
 import React from "react";
-import { Layer, Rect, Group } from "react-konva";
+import { Layer, Rect, Shape, Group } from "react-konva";
 import { NOTE_NAME_TO_FREQ,
          ROW_IDX_TO_NOTE_NAME,
+         FREQ_TO_COLOR,
          overlappingNote } from "../../../utils/editor_utils";
 import _ from "lodash";
 
@@ -19,6 +20,9 @@ class NoteBlock extends React.Component {
 
     this.dragStart = this.dragStart.bind(this);
     this.dragEnd = this.dragEnd.bind(this);
+
+    this.drawLeftTriangle = this.drawLeftTriangle.bind(this);
+    this.drawRightTriangle = this.drawRightTriangle.bind(this);
   }
 
   setCursor(type) {
@@ -116,6 +120,30 @@ class NoteBlock extends React.Component {
     }
   }
 
+  drawLeftTriangle() {
+    let height = this.props.height;
+    return function(ctx) {
+      ctx.beginPath();
+      ctx.moveTo(2, height/2);
+      ctx.lineTo(8, 4);
+      ctx.lineTo(8, height-4);
+      ctx.closePath();
+      ctx.fillStrokeShape(this);
+    }
+  }
+
+  drawRightTriangle() {
+    let height = this.props.height;
+    return function(ctx) {
+      ctx.beginPath();
+      ctx.moveTo(8, height/2);
+      ctx.lineTo(2, 4);
+      ctx.lineTo(2, height-4);
+      ctx.closePath();
+      ctx.fillStrokeShape(this);
+    }
+  }
+
   componentDidMount() {
     function boundY(pos) {
       return {
@@ -153,38 +181,65 @@ class NoteBlock extends React.Component {
           y={0}
           width={this.props.width}
           height={this.props.height}
-          fill="black"
+          stroke="black"
+          strokeWidth="1"
+          fill={FREQ_TO_COLOR[this.props.freq]}
           onMouseEnter={this.setCursor("move")}
           onMouseLeave={this.setCursor("default")}
         />
-        <Rect
+        <Group
           ref="leftHandle"
           draggable="true"
           x={0}
           y={0}
-          width={10}
-          height={this.props.height}
-          fill="red"
           onMouseEnter={this.setCursor("w-resize")}
           onMouseLeave={this.setCursor("default")}
           onDragStart={this.expandLeftStart}
           onDragMove={this.expandLeftMove}
           onDragEnd={this.expandLeftEnd}
-        />
-        <Rect
+        >
+          <Rect
+            ref="leftHandleRect"
+            x={0}
+            y={0}
+            width={10}
+            height={this.props.height}
+            fill="#eeeeee"
+            stroke="black"
+            strokeWidth="1"
+          />
+          <Shape
+            ref="leftHandleTriangle"
+            sceneFunc={this.drawLeftTriangle()}
+            fill="#777777"
+          />
+        </Group>
+        <Group
           ref="rightHandle"
           draggable="true"
           x={this.props.width-10}
           y={0}
-          width={10}
-          height={this.props.height}
-          fill="red"
           onMouseEnter={this.setCursor("e-resize")}
           onMouseLeave={this.setCursor("default")}
           onDragStart={this.expandRightStart}
           onDragMove={this.expandRightMove}
           onDragEnd={this.expandRightEnd}
-        />
+        >
+          <Rect
+            ref="rightHandle"
+            x={0}
+            y={0}
+            width={10}
+            height={this.props.height}
+            fill="#eeeeee"
+            stroke="black"
+            strokeWidth="1"
+          />
+          <Shape
+            ref="rightHandleTriangle"
+            sceneFunc={this.drawRightTriangle()}
+            fill="#777777"/>
+        </Group>
       </Group>
     );
   }

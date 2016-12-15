@@ -13,7 +13,9 @@ const _emptyTrack = {
   bpm: 60,
   length: 0,
   channels_attributes: [
-    {notes_attributes: []}
+    { volume: 1,
+      notes_attributes: []
+    }
   ]
 };
 
