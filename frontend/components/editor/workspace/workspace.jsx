@@ -53,28 +53,23 @@ class Workspace extends React.Component {
 
   scrollWithTrack(scrolling) {
     if (scrolling && !this.scrollingHandle) {
-      let playbackIntervals = 0;
+      let startTime = Date.now();
       this.scrollToLeft();
-      playbackIntervals += 1;
       let bps = this.props.track.bpm / 60;
       let qbps = bps * 4;
-      let qbpds = qbps / 10;
-      let pixels_per_decisecond = qbpds * this.qbeatWidth;
-      let pos = playbackIntervals * pixels_per_decisecond;
-      this.refs.notes_canvas.scrollLeft = pos;
+      let pixelsPerSecond = qbps * this.qbeatWidth;
 
-      this.scrollingHandle = setInterval(() => {
-        playbackIntervals += 1;
-        let bps = this.props.track.bpm / 60;
-        let qbps = bps * 4;
-        let qbpds = qbps / 10;
-        let pixels_per_decisecond = qbpds * this.qbeatWidth;
-        let pos = playbackIntervals * pixels_per_decisecond;
+      scroll = () => {
+        this.scrollingHandle = requestAnimationFrame(scroll);
+        let deltaTime = Date.now() - startTime;
+        let pos = (deltaTime/1000) * pixelsPerSecond;
         this.refs.notes_canvas.scrollLeft = pos;
-      }, 100);
+      }
+
+      scroll();
     }
     else if (this.scrollingHandle) {
-      clearInterval(this.scrollingHandle);
+      cancelAnimationFrame(this.scrollingHandle);
       this.scrollingHandle = null;
     }
   }

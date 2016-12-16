@@ -32,7 +32,7 @@ class Row extends React.Component {
     if (this.state.highlight) {
       color = "white"
     }
-      
+    
     return (
       <Rect
         x={this.props.x}
