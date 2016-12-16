@@ -137,6 +137,10 @@ export class Track {
         );
       }
      
+      if (notesToGen < 10000) {
+        this.playQueue[this.playQueue.length-1].oscillator.onended = this.finish;
+      }
+     
       // Timing test 
       // let pgend = new Date();
       // console.log(`PlayQueue generation cycle took ${pgend.getTime() - pgstart.getTime()} ms`);
@@ -144,6 +148,7 @@ export class Track {
       return true;
     }
     else {
+      this.playQueue[this.playQueue.length-1].onended = () => {console.log("Finished");this.finish};
       return false;
     }
   }
@@ -163,9 +168,6 @@ export class Track {
     this.generateNotes(); // Generate the first round of notes immediately
     this.playQueueGen = setInterval(() => {
       if (!this.generateNotes()) {
-        if (this.playQueue.length > 0) {
-          this.playQueue[this.playQueue.length-1].onended = this.finish;
-        }
         clearInterval(this.playQueueGen);
       }
     }, 1000);

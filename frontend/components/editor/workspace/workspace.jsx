@@ -21,12 +21,62 @@ class Workspace extends React.Component {
     this.handleRowClick = this.handleRowClick.bind(this);
     this.handleScroll = this.handleScroll.bind(this);
     this.handleNoteBlockClick = this.handleNoteBlockClick.bind(this);
+    this.scrollWithTrack = this.scrollWithTrack.bind(this);
+    this.scrollToLeft = this.scrollToLeft.bind(this);
+    this.scrollToTop = this.scrollToTop.bind(this);
+    this.scrollToDefault = this.scrollToDefault.bind(this);
   }
 
   componentDidMount() {
+    this.scrollToDefault();
+  }
+
+  componentDidUpdate() {
+    this.scrollWithTrack(this.props.scrolling);
+  }
+
+  scrollToLeft() {
+    this.refs.notes_canvas.scrollLeft = 0;
+    this.refs.timeline.scrollLeft = 0;
+  }
+
+  scrollToTop() {
+    this.refs.notes_canvas.scrollTop = 0;
+    this.refs.sidebar.scrollTop = 0;
+  }
+
+  scrollToDefault() {
     let octaves = 12;
     this.refs.notes_canvas.scrollTop = 2.2 * octaves * this.rowHeight;
     this.refs.sidebar.scrollTop = 2.2 * octaves * this.rowHeight;
+  }
+
+  scrollWithTrack(scrolling) {
+    if (scrolling && !this.scrollingHandle) {
+      let playbackIntervals = 0;
+      this.scrollToLeft();
+      playbackIntervals += 1;
+      let bps = this.props.track.bpm / 60;
+      let qbps = bps * 4;
+      let qbpds = qbps / 10;
+      let pixels_per_decisecond = qbpds * this.qbeatWidth;
+      let pos = playbackIntervals * pixels_per_decisecond;
+      this.refs.notes_canvas.scrollLeft = pos;
+
+      this.scrollingHandle = setInterval(() => {
+        playbackIntervals += 1;
+        let bps = this.props.track.bpm / 60;
+        let qbps = bps * 4;
+        let qbpds = qbps / 10;
+        let pixels_per_decisecond = qbpds * this.qbeatWidth;
+        let pos = playbackIntervals * pixels_per_decisecond;
+        this.refs.notes_canvas.scrollLeft = pos;
+      }, 100);
+    }
+    else if (this.scrollingHandle) {
+      clearInterval(this.scrollingHandle);
+      this.scrollingHandle = null;
+    }
   }
 
   handleRowClick(id) {
@@ -76,8 +126,6 @@ class Workspace extends React.Component {
     if (row.scrollHeight + offset === this.refs.sidebar.scrollHeight) {
       this.refs.sidebar.scrollTop = row.scrollTop;
     }
-    console.log(this.refs.sidebar.scrollHeight, this.refs.sidebar.scrollTop);
-    console.log(row.scrollHeight, row.scrollTop);
   }
 
   updateNoteInTrack(idx) {

@@ -6,7 +6,8 @@ class Editor extends React.Component {
     super(props);
 
     this.state = {
-      selectedChannel: 0
+      selectedChannel: 0,
+      scrolling: false
     }
 
     this.selectChannel = this.selectChannel.bind(this);
@@ -69,13 +70,25 @@ class Editor extends React.Component {
   }
 
   playTrack(e) {
-    e.preventDefault();
+    if (e) {
+      e.preventDefault();
+    }
     this.props.playTrack();
+    this.setState({scrolling: true});
+    let playTrackHandle = setInterval(() => {
+      if (!this.props.player.track.playing) {
+        this.stopTrack();
+        clearInterval(playTrackHandle);
+      }
+    }, 100);
   }
 
   stopTrack(e) {
-    e.preventDefault();
+    if (e) {
+      e.preventDefault();
+    }
     this.props.stopTrack();
+    this.setState({scrolling: false});
   }
 
   addChannel(e) {
@@ -89,7 +102,6 @@ class Editor extends React.Component {
 
   goBack(e) {
     e.preventDefault();
-    console.log(this.props);
     this.props.router.goBack();
   }
 
@@ -156,6 +168,7 @@ class Editor extends React.Component {
           <Workspace
             track={this.props.track}
             selectedChannel={this.state.selectedChannel}
+            scrolling={this.state.scrolling}
             updateNoteInTrack={
               this.updateNoteInTrack(
                 this.state.selectedChannel

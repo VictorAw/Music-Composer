@@ -130,7 +130,6 @@ class Sidebar extends React.Component {
             height={rowHeight}
             fill={color}/>
     );
-    console.log(this.rects.length);
   }
 
   render() {
