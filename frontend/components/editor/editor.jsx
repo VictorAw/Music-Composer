@@ -73,12 +73,16 @@ class Editor extends React.Component {
     if (e) {
       e.preventDefault();
     }
+
+    if (this.state.scrolling) {
+      this.stopTrack();
+    }
+
     this.props.playTrack();
     this.setState({scrolling: true});
-    let playTrackHandle = setInterval(() => {
+    this.playTrackHandle = setInterval(() => {
       if (!this.props.player.track.playing) {
         this.stopTrack();
-        clearInterval(playTrackHandle);
       }
     }, 100);
   }
@@ -87,6 +91,7 @@ class Editor extends React.Component {
     if (e) {
       e.preventDefault();
     }
+    clearInterval(this.playTrackHandle);
     this.props.stopTrack();
     this.setState({scrolling: false});
   }
@@ -131,7 +136,7 @@ class Editor extends React.Component {
         +
       </a>
     )
-
+console.log("rendering");
     return (
       <div className="editor-container">
         <a href="#"

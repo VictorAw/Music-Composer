@@ -108,7 +108,10 @@ export class Track {
   finish() {
     this.context.close();
     this.playQueue = [];
-    this.playing = false
+    this.playing = false;
+    if (this.playQueueGen) {
+      this.playQueueGen = clearInterval(this.playQueueGen);
+    }
   }
 
   generateNotes() {
@@ -147,10 +150,12 @@ export class Track {
 
       return true;
     }
-    else {
-      this.playQueue[this.playQueue.length-1].onended = () => {console.log("Finished");this.finish};
-      return false;
+    else if (this.playQueue.length > 0) {
+      this.playQueue[this.playQueue.length-1].onended = this.finish;
     }
+    console.log("returning false");
+    
+    return false;
   }
 
   reset() {
