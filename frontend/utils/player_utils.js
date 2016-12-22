@@ -98,7 +98,6 @@ export class Track {
 
     // Set up playback session
     this.reset();
-    this.playing = true;
   }
 
   bindEventHandlers() {
@@ -153,7 +152,6 @@ export class Track {
     else if (this.playQueue.length > 0) {
       this.playQueue[this.playQueue.length-1].onended = this.finish;
     }
-    console.log("returning false");
     
     return false;
   }
@@ -169,19 +167,25 @@ export class Track {
     this.context = new AudioContext();
     // Start creating playback notes
     this.playQueue = [];
-    // Generate new notes every second
-    this.generateNotes(); // Generate the first round of notes immediately
-    this.playQueueGen = setInterval(() => {
-      if (!this.generateNotes()) {
-        clearInterval(this.playQueueGen);
-      }
-    }, 1000);
+ 
+    // Generate the first round of notes immediately
+    // Generate new notes every second if there are still notes to produce
+    if (this.generateNotes()) {
+      this.playQueueGen = setInterval(() => {
+        if (!this.generateNotes()) {
+          clearInterval(this.playQueueGen);
+        }
+      }, 1000);
+    }
 
     // Timing test
     // let rend = new Date();
     // console.log(`Reset took ${rend.getTime() - rstart.getTime()} msec`);
 
-    this.playing = true;
+    // Only indicate that the track is playing if there are any notes to play
+    if (this.playQueue.length > 0) {
+      this.playing = true;
+    }
   }
 
   continuePlay() {

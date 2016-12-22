@@ -81,10 +81,12 @@ class Editor extends React.Component {
     this.props.playTrack();
     this.setState({scrolling: true});
     this.playTrackHandle = setInterval(() => {
-      if (!this.props.player.track.playing) {
+      // Stop checking for playback if the track is finished or if it's
+      // been cleared from the state
+      if (!this.props.player.track || !this.props.player.track.playing) {
         this.stopTrack();
       }
-    }, 100);
+    }, 16);
   }
 
   stopTrack(e) {
@@ -136,7 +138,7 @@ class Editor extends React.Component {
         +
       </a>
     )
-console.log("rendering");
+
     return (
       <div className="editor-container">
         <a href="#"
