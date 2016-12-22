@@ -30,7 +30,7 @@ class Row extends React.Component {
   render() {
     let color = this.props.color;
     if (this.state.highlight) {
- //     color = "white"
+      color = "white"
     }
     
     return (
